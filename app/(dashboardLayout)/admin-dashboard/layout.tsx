@@ -9,14 +9,14 @@ export const metadata: Metadata = {
   description: "Recipe Sharing Community ",
 };
 
-export default function DashboardLayout({
+export default function AdminLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <div>
-    Dashboard navbar
+    Admin Dashboard sidebar
     {children}
   </div>
   );
