@@ -1,6 +1,12 @@
 /* eslint-disable prettier/prettier */
 import { Navbar } from "@/src/components/navbar";
+import { Metadata } from "next";
 import React from "react";
+
+export const metadata: Metadata = {
+    title: "Crave - Recipe Sharing Community",
+    description: "Crave - Recipe Sharing Community",
+  };
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
