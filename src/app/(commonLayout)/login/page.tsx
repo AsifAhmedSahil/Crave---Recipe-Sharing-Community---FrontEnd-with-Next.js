@@ -11,6 +11,8 @@ import Lottie from 'lottie-react'
 import Link from 'next/link'
 import React from 'react'
 import { FieldValues, SubmitHandler } from 'react-hook-form'
+import { zodResolver } from "@hookform/resolvers/zod";
+import loginValidationSchema from '@/src/schemas/login.schema'
 
 const LoginPage = () => {
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -24,6 +26,7 @@ const LoginPage = () => {
       <div className="w-[80%] mx-auto ">
         <Form
           onSubmit={onSubmit}
+          resolver={zodResolver(loginValidationSchema)}
           
         >
           <div className="py-3">

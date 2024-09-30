@@ -27,8 +27,8 @@ export default function FormInput({
   return (
     <Input
       {...register(name)}
-      isInvalid={!!errors[name]}
       errorMessage={errors[name] ? (errors[name].message as string) : ""}
+      isInvalid={!!errors[name]}
    
       variant={variant}
       size={size}
