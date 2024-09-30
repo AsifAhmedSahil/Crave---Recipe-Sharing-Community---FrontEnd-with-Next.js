@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/jsx-sort-props */
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -14,7 +16,7 @@ import { Input } from "@nextui-org/input";
 import { link as linkStyles } from "@nextui-org/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
-
+import logo from "@/src/assets/images/logo.jpg";
 import { siteConfig } from "@/src/config/site";
 import { ThemeSwitch } from "@/src/components/theme-switch";
 import {
@@ -25,6 +27,7 @@ import {
   SearchIcon,
   Logo,
 } from "@/src/components/icons";
+import Image from "next/image";
 
 export const Navbar = () => {
   const searchInput = (
@@ -52,9 +55,9 @@ export const Navbar = () => {
     <NextUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
-          <NextLink className="flex justify-start items-center gap-1" href="/">
-            <Logo />
-            <p className="font-bold text-inherit">ACME</p>
+          <NextLink className="flex justify-start items-center gap-2" href="/">
+            <Image src={logo} alt="logo" className="w-10 h-10 rounded-full" />
+            <p className="font-bold text-inherit text-xl">Crave</p>
           </NextLink>
         </NavbarBrand>
         <ul className="hidden lg:flex gap-4 justify-start ml-2">
@@ -90,7 +93,6 @@ export const Navbar = () => {
       </NavbarContent>
 
       <NavbarMenu>
-        
         <div className="mx-4 mt-2 flex flex-col gap-2">
           {siteConfig.navMenuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
