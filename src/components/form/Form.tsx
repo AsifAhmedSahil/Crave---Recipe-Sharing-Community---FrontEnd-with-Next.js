@@ -15,7 +15,7 @@ interface IProps extends formConfig {
   onSubmit: SubmitHandler<any>;
 }
 
-const FXForm = ({ children, onSubmit, defaultValues, resolver }: IProps) => {
+const Form = ({ children, onSubmit, defaultValues, resolver }: IProps) => {
   const formConfig: formConfig = {};
 
   if (!!defaultValues) {
@@ -35,4 +35,4 @@ const FXForm = ({ children, onSubmit, defaultValues, resolver }: IProps) => {
   );
 };
 
-export default FXForm;
+export default Form;

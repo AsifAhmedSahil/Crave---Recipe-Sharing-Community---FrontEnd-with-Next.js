@@ -22,10 +22,12 @@ export async function middleware(request: NextRequest) {
     const {pathname} =request.nextUrl
 
 
-    const user = {
-        name:"asif",
-        role:"ADMIN"
-    }
+    // const user = {
+    //     name:"asif",
+    //     role:"ADMIN"
+    // }
+
+    const user = undefined
     
 
     
