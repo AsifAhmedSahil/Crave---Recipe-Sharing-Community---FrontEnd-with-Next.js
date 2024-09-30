@@ -13,10 +13,11 @@ import React from 'react'
 import { FieldValues, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod";
 import loginValidationSchema from '@/src/schemas/login.schema'
+import registerValidationSchema from '@/src/schemas/register.schema'
 
 const RegisterPage = () => {
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        console.log(data)
+        console.log(data,"******")
       };
   return (
     <div className="flex h-[calc(100vh-200px)] w-full   items-center justify-center ">
@@ -26,14 +27,21 @@ const RegisterPage = () => {
       <div className="w-[80%] mx-auto ">
         <Form
           onSubmit={onSubmit}
-          resolver={zodResolver(loginValidationSchema)}
+          resolver={zodResolver(registerValidationSchema)}
           defaultValues={{
             name:"Asif",
+            username:"Asif007",
             email:"asif@gmail.com",
             password:"123456"
           }}
           
         >
+            <div className="py-3">
+            <FormInput name="name" label="Name" type="text" />
+          </div>
+            <div className="py-3">
+            <FormInput name="username" label="User Name" type="text" />
+          </div>
           <div className="py-3">
             <FormInput name="email" label="Email" type="email" />
           </div>
@@ -46,7 +54,7 @@ const RegisterPage = () => {
             size="lg"
             type="submit"
           >
-            Login
+            Register
           </Button>
         </Form>
         <div className="text-center">
