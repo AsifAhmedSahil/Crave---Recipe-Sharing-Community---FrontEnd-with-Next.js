@@ -27,6 +27,11 @@ const LoginPage = () => {
         <Form
           onSubmit={onSubmit}
           resolver={zodResolver(loginValidationSchema)}
+          defaultValues={{
+            name:"Asif",
+            email:"asif@gmail.com",
+            password:"123456"
+          }}
           
         >
           <div className="py-3">
@@ -45,7 +50,7 @@ const LoginPage = () => {
           </Button>
         </Form>
         <div className="text-center">
-          Don&lsquo;t have account ? <Link href={"/register"}>Register</Link>
+          Don&lsquo;t have account ? <Link href={"/register"}><span className='text-red-600 font-bold '>Register</span></Link>
         </div>
       </div>
       </div>
