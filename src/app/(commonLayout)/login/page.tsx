@@ -13,10 +13,13 @@ import React from 'react'
 import { FieldValues, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod";
 import loginValidationSchema from '@/src/schemas/login.schema'
+import { useUserLogin } from '@/src/hooks/auth.hook'
 
 const LoginPage = () => {
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        console.log(data)
+  const {mutate: handleLogin} = useUserLogin()
+    const onSubmit: SubmitHandler<FieldValues> = (userData) => {
+        console.log(userData)
+        handleLogin(userData)
       };
   return (
     <div className="flex h-[calc(100vh-200px)] w-full   items-center justify-center ">
