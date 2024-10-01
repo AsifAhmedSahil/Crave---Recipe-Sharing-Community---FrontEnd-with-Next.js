@@ -9,18 +9,32 @@ import { Button } from '@nextui-org/button'
 import loginGif from "@/src/Animation - 1727687940332.json"
 import Lottie from 'lottie-react'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FieldValues, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod";
 import loginValidationSchema from '@/src/schemas/login.schema'
 import { useUserLogin } from '@/src/hooks/auth.hook'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 const LoginPage = () => {
-  const {mutate: handleLogin} = useUserLogin()
+  const searchParam = useSearchParams()
+  const redirect = searchParam.get("redirect")
+  const router = useRouter()
+  const {mutate: handleLogin,isPending,isSuccess} = useUserLogin()
     const onSubmit: SubmitHandler<FieldValues> = (userData) => {
         console.log(userData)
         handleLogin(userData)
       };
+
+      useEffect(()=>{
+        if(!isPending && isSuccess){
+          if(redirect){
+            router.push(redirect)
+          }else{
+            router.push("/")
+          } 
+        }
+    },[isPending,isSuccess])
   return (
     <div className="flex h-[calc(100vh-200px)] w-full   items-center justify-center ">
       <div className='w-full lg:w-1/2   text-center py-8'>

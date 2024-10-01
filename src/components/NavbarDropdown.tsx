@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-sort-props */
 /* eslint-disable padding-line-between-statements */
 "use client";
 /* eslint-disable prettier/prettier */
@@ -10,6 +11,7 @@ import {
 } from "@nextui-org/dropdown";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { logout } from "../services/AuthService";
 
 const NavbarDropdown = () => {
   const router = useRouter();
@@ -31,7 +33,7 @@ const NavbarDropdown = () => {
         <DropdownItem onClick={() => handleNavigation("/profile/post-recipe")}>
           Post Recipe
         </DropdownItem>
-        <DropdownItem key="delete" className="text-danger" color="danger">
+        <DropdownItem onClick={()=> logout()}  className="text-danger" color="danger">
           Logout
         </DropdownItem>
       </DropdownMenu>
