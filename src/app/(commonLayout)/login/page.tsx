@@ -35,6 +35,7 @@ const LoginPage = () => {
           
         >
           
+          
           <div className="py-3">
             <FormInput name="email" label="Email" type="email" />
           </div>
