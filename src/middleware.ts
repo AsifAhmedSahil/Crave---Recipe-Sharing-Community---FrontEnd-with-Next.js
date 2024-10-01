@@ -3,6 +3,7 @@
 /* eslint-disable prettier/prettier */
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { getCurrentUser } from './services/AuthService'
 
 
 const AuthRoutes = ['/login','/register']
@@ -21,6 +22,8 @@ export async function middleware(request: NextRequest) {
 
     const {pathname} =request.nextUrl
 
+    const userToken = await getCurrentUser()
+    console.log(userToken)
 
     // const user = {
     //     name:"asif",

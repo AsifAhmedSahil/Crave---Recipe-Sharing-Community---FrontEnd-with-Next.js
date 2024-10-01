@@ -11,7 +11,7 @@ export interface IUser {
   role: string;
   email: string;
   status: string;
-  mobileNumber: string;
+  username: string;
   profilePhoto: string;
   createdAt?: string;
   updatedAt?: string;
