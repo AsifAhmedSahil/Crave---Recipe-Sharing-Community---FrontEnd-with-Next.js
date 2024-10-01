@@ -9,6 +9,7 @@ export const registerUser = async (userData :FieldValues) =>{
 
         const res = await axiosInstance.post("/auth/register",userData)
         console.log(res.data)
+        return res.data
         
     } catch (error:any) {
         throw new Error(error)
