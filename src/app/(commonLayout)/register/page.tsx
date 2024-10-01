@@ -16,8 +16,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import registerValidationSchema from "@/src/schemas/register.schema";
 import { toast } from "sonner";
 import { registerUser } from "@/src/services/AuthService";
+import { useMutation } from "@tanstack/react-query";
+import { useUserRegistration } from "@/src/hooks/auth.hook";
 
 const RegisterPage = () => {
+
+    const {mutate: handleRegistration} = useUserRegistration()
+
+
   const [file, setFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
 
@@ -65,12 +71,13 @@ const RegisterPage = () => {
         ...data,profilePhoto
       }
       console.log(userData)
-      const res = await registerUser(userData)
-      console.log(res)
-      if(res.success){
+    //    handleRegistration(userData)
+    handleRegistration(userData)
+      
+    //   if(isSuccess){
 
-          toast.success("Registration successful", { id: loadingToastId });
-      }
+    //       toast.success("Registration successful", { id: loadingToastId });
+    //   }
 
       // Navigate to login or another page here
     } catch (error) {
