@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-sort-props */
+'use client'
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -29,8 +30,11 @@ import {
 } from "@/src/components/icons";
 import Image from "next/image";
 import NavbarDropdown from "./NavbarDropdown";
+import { useUser } from "../context/user.provider";
+import React from "react";
 
 export const Navbar = () => {
+  const { user } = useUser();
   const searchInput = (
     <Input
       aria-label="Search"
@@ -86,9 +90,20 @@ export const Navbar = () => {
         <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
         </NavbarItem>
-        <NavbarItem className="hidden sm:flex gap-2">
-          <NavbarDropdown/>
-        </NavbarItem>
+        {user?.email ? (
+          <>
+            <NavbarItem className="hidden sm:flex gap-2">
+              <Button>Dashboard</Button>
+            </NavbarItem>
+            <NavbarItem className="hidden sm:flex gap-2">
+              <NavbarDropdown />
+            </NavbarItem>
+          </>
+        ) : (
+          <Link href="/login">
+            <Button>Login</Button>
+          </Link>
+        )}
       </NavbarContent>
 
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
@@ -115,6 +130,7 @@ export const Navbar = () => {
               </Link>
             </NavbarMenuItem>
           ))}
+          <Button>Dashboard</Button>
         </div>
       </NavbarMenu>
     </NextUINavbar>
