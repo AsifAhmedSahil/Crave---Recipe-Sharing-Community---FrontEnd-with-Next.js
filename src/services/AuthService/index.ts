@@ -47,6 +47,37 @@ export const forgotPassword = async (userData: FieldValues) => {
     throw new Error(error);
   }
 };
+// export const resetPassword = async (userData: FieldValues) => {
+//   try {
+//     const { data } = await axiosInstance.post("/auth/reset-password", userData);
+
+//     console.log(data)
+
+//     return data;
+//   } catch (error: any) {
+//     throw new Error(error);
+//   }
+// };
+
+export const resetPassword = async (userData: FieldValues, token: string) => {
+  try {
+    const { data } = await axiosInstance.post(
+      "/auth/reset-password",
+      userData,
+      {
+        headers: {
+          Authorization: token, // Set the token here
+        },
+      }
+    );
+
+    console.log(data);
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
 
 export const logout = () =>{
     cookies().delete("accessToken")
