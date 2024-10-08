@@ -106,11 +106,11 @@ const ContactPage = () => {
     // </div>
     // </div>
 
-    <div className="px-4 py-8  w-full">
+    <div className="px-4  lg:py-8  w-full">
         <h1 className="text-4xl font-bold mb-4 text-center ">Get in Touch</h1>
     {/* <ScrollUpButton />
     <GlobeDemo /> */}
-    <div className="   py-24 sm:py-[24px]">
+    <div className="   py-2 lg:py-[24px]">
       <div className="container mx-auto px-4 py-12">
         {/* Contact Form and Map */}
         <div className="lg:flex lg:space-x-12">

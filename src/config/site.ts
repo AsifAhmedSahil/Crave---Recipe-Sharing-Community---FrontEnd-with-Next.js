@@ -5,10 +5,6 @@ export const siteConfig = {
   description: "Crave - Recipe Sharing Community",
   navItems: [
     {
-      label: "Home",
-      href: "/",
-    },
-    {
       label: "Recipes",
       href: "/recipe",
     },
