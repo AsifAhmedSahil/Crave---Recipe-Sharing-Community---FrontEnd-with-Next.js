@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 "use client";
 
 import { FC } from "react";
@@ -37,6 +38,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
     "aria-label": `Switch to ${theme === "light" || isSSR ? "dark" : "light"} mode`,
     onChange,
   });
+  const textColor = theme === "light" ? "text-black" : "text-white";
 
   return (
     <Component
@@ -51,7 +53,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
       <VisuallyHidden>
         <input {...getInputProps()} />
       </VisuallyHidden>
-      <div
+      {/* <div
         {...getWrapperProps()}
         className={slots.wrapper({
           class: clsx(
@@ -69,12 +71,41 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
             classNames?.wrapper,
           ),
         })}
-      >
-        {!isSelected || isSSR ? (
+      > */}
+       <div
+          {...getWrapperProps()}
+          className={clsx(
+            slots.wrapper({
+              class: clsx(
+                [
+                  "w-auto h-auto",
+                  "bg-transparent",
+                  "rounded-lg",
+                  "flex items-center justify-center",
+                  "group-data-[selected=true]:bg-transparent",
+                  "!text-default-500",
+                  "pt-px",
+                  "px-0",
+                  "mx-0",
+                ],
+                classNames?.wrapper,
+              ),
+            }),
+            textColor // Apply the text color based on theme
+          )}
+        >
+        {/* {!isSelected || isSSR ? (
           <SunFilledIcon size={22} />
         ) : (
           <MoonFilledIcon size={22} />
-        )}
+        )} */}
+        <span className={textColor}>
+            {!isSelected || isSSR ? (
+              <SunFilledIcon size={22} />
+            ) : (
+              <MoonFilledIcon size={22} />
+            )}
+          </span>
       </div>
     </Component>
   );

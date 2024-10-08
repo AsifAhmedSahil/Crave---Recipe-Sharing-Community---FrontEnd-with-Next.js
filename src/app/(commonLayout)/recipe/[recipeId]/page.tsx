@@ -3,7 +3,7 @@
 /* eslint-disable prettier/prettier */
 "use client";
 import { useUser } from "@/src/context/user.provider";
-import { useAddComment } from "@/src/hooks/recipe.hook";
+import { useAddComment, useAddRating } from "@/src/hooks/recipe.hook";
 import { getCurrentUser } from "@/src/services/AuthService";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -22,6 +22,16 @@ interface Comment {
     profilePhoto: string;
     createdAt: Date;
   }
+  interface upvote {
+    _id:string
+  }
+  interface Rating {
+    _id: string;        // Unique identifier for the rating
+    userId: string;     // ID of the user who rated the recipe
+    recipeId: string;   // ID of the recipe that was rated
+    stars: number;      // Rating value (e.g., 1 to 5)
+  }
+  
 
 interface RecipeData {
   _id: string;
@@ -32,13 +42,18 @@ interface RecipeData {
   instructions: string;
   averageRating: number;
   comments: Comment[];
+  ratings:Rating[];
+  upvotes: upvote[];  // New field for upvotes
+  downvotes: number;
 }
 
 const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
     const [recipeData, setRecipeData] = useState<RecipeData | null>(null);
   const [newComment, setNewComment] = useState("");
+  const [rating, setRating] = useState("");
   const user = useUser();
   const { mutate: handleAddComment } = useAddComment();
+  const { mutate: handleAddRating } = useAddRating();
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -89,6 +104,51 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
     }
   };
 
+  const handleUpvote = () => {
+    setRecipeData((prevData) => {
+      if (!prevData) return prevData;
+      const upvoteData = {
+        recipeId:recipeData?._id,
+        userId: user?.user?._id
+
+      }
+
+      return {
+        ...prevData,
+        upvotes: [...prevData.upvotes] ,
+      };
+    });
+
+    // Optionally, send the upvote to the backend
+  };
+
+  const handleDownvote = () => {
+    setRecipeData((prevData) => {
+      if (!prevData) return prevData;
+
+      return {
+        ...prevData,
+        downvotes: prevData.downvotes + 1,
+      };
+    });
+
+    // Optionally, send the downvote to the backend
+  };
+
+  const handleRatingSubmit = (e: any) => {
+    e.preventDefault();
+    const ratingData = {
+        recipeId:recipeData?._id,
+        userId:user?.user?._id,
+        stars: parseInt(rating)
+    }
+    console.log("Rating submitted:", ratingData);
+    // Here, you can also send the rating to the backend if needed
+    setRating(""); // Clear the input field after submission
+    handleAddRating(ratingData)
+    
+  };
+
   console.log(recipeData?.comments, "************");
   if (!recipeData) return <div>Loading...</div>;
 
@@ -129,12 +189,42 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
           <p className="text-gray-600">{recipeData.instructions}</p>
         </div>
         <div className="flex justify-between items-center mb-6">
+            <div className="flex gap-4 items-center">
+
           <span className="text-lg font-semibold text-black">
-            Average Rating: {recipeData.averageRating} ★
+            Average Rating: {recipeData.averageRating} ⭐
           </span>
-          <button className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 rounded-lg px-4 py-2">
-            Rate Recipe
-          </button>
+          
+          <form onSubmit={handleRatingSubmit} className="flex space-x-2">
+            <input
+              type="number"
+              min="1"
+              max="5"
+              value={rating}
+              onChange={(e) => setRating(e.target.value)}
+              placeholder="Rate (1-5)"
+              className="border border-gray-300 rounded-lg p-2 w-48"
+              required
+            />
+            <button type="submit" className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 rounded-lg px-4 py-2">
+              Review
+            </button>
+          </form>
+            </div>
+          <div className="flex space-x-4">
+            <button 
+            // onClick={handleUpvote}
+             className="text-green-500">
+              Upvote 
+              {/* ({recipeData.upvotes}) */}
+            </button>
+            <button 
+            // onClick={handleDownvote} 
+             className="text-red-500">
+              Downvote 
+              {/* ({recipeData.downvotes}) */}
+            </button>
+          </div>
         </div>
         <div className="mt-8">
           <h2 className="text-xl font-semibold mb-2 text-black">Comments:</h2>
