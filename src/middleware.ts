@@ -7,10 +7,15 @@ import { getCurrentUser } from './services/AuthService';
 
 const AuthRoutes = ['/login', '/register'];
 
+// const roleBasedRoutes = {
+//     USER: [/^\/profile/],
+//     ADMIN: [/^\/admin/],
+// };
 const roleBasedRoutes = {
-    USER: [/^\/profile/],
-    ADMIN: [/^\/admin/],
+    USER: [/^\/profile/, /^\/profile\/.*/],
+    ADMIN: [/^\/admin/, /^\/admin\/.*/, /^\/admin-dashboard$/], // Include admin-dashboard here
 };
+
 
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
@@ -54,5 +59,5 @@ export async function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-    matcher: ['/login', '/register', '/profile', '/profile/:page*', '/admin', '/admin/:page*'],
+    matcher: ['/login', '/register', '/profile', '/profile/:page*', '/admin', '/admin/:page*','/admin-dashboard'],
 };
