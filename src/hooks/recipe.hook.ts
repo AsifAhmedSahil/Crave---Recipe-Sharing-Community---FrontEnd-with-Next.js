@@ -5,7 +5,7 @@
 /* eslint-disable prettier/prettier */
 import { useMutation } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
-import { addComment, postRecipe, ratingRecipe } from "../services/recipeServices";
+import { addComment, deleteRecipe, postRecipe, ratingRecipe } from "../services/recipeServices";
 import { toast } from "sonner";
 
 export const useAddComment = () => {
@@ -40,6 +40,18 @@ export const useAddRecipe = () => {
     // onSuccess: () => {
     //   toast.success("Post this recipe Successfully");
     // },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+export const useDeleteRecipe = () => {
+  return useMutation<any, Error, string>({
+    mutationKey: ["DELETE_RECIPE"],
+    mutationFn: async (id) => await deleteRecipe(id),
+    onSuccess: () => {
+      toast.success("Recipe Deleted Successfully");
+    },
     onError: (error) => {
       toast.error(error.message);
     },

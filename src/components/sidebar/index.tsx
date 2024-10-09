@@ -5,13 +5,16 @@
 import { useState } from "react";
 import Link from "next/link";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { userLinks } from "./constants"; // Adjust the path as necessary
+import { getUserLinks} from "./constants"; // Adjust the path as necessary
 import Image from "next/image";
 import logo from "@/src/assets/images/logo.jpg";
 import { Button } from "@nextui-org/button";
+import { useUser } from "@/src/context/user.provider";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useUser();
+  const userLinks = getUserLinks(user?._id );
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);

@@ -36,3 +36,12 @@ export const postRecipe = async (postData: FieldValues) => {
     throw new Error(error);
   }
 };
+export const deleteRecipe = async (id: string) => {
+  try {
+    const { data } = await axiosInstance.delete(`/items/recipe/${id}`);
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
