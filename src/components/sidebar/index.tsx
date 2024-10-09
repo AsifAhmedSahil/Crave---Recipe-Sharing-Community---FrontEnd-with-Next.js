@@ -49,10 +49,13 @@ const Sidebar = () => {
           <ul className="space-y-4">
             {userLinks.map((link, index) => (
               <li key={index}>
-                <Link href={link.href} className="flex items-center space-x-2 w-full">
-                  {/* {link.icon} */}
-                  <Button className="w-full">{link.label}</Button>
-                </Link>
+                <Button
+                  as={Link}
+                  className="mt-2 w-full rounded-md"
+                  href={link.href}
+                >
+                  {link.label}
+                </Button>
               </li>
             ))}
           </ul>
@@ -63,6 +66,7 @@ const Sidebar = () => {
       {/* <div className="flex-1 p-4">
         <h1 className="text-3xl font-bold">Main Content</h1>
         <p>This is where your main content will go.</p>
+        
       </div> */}
     </div>
   );

@@ -96,7 +96,7 @@ export const Navbar = () => {
           <>
             {user.role === "USER" ? (
               <NavbarItem className="hidden sm:flex gap-2">
-                <Link href={"/dashboard"}>
+                <Link href={"/dashboard/profile"}>
                   <Button>Dashboard</Button>
                 </Link>
               </NavbarItem>
@@ -143,7 +143,7 @@ export const Navbar = () => {
             </NavbarMenuItem>
           ))}
           {user?.role === "USER" ? (
-            <Link href={"/dashboard"} className="w-full ">
+            <Link href={"/dashboard/profile"} className="w-full ">
               <Button className="w-full bg-green-600">Dashboard</Button>
             </Link>
           ) : (

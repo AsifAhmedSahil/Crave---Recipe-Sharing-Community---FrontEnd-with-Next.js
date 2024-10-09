@@ -22,19 +22,22 @@ export default function UserDashboardLayout({
       User Dashboard Sidebar
       {children}
     </div> */}
-      <div>
         {/* <UserNavbar /> */}
-        <DashboardTitle />
-        <Container>
-        <div className="w-full my-12 flex gap-12 ">
-          <div className=" lg:w-2/5">
-            {/* sidebar */}
-            <Sidebar />
-          </div>
-          <div className="w-full lg:w-3/5 ">{children}</div>
-        </div>
-        </Container>
+        <div className="overflow-x-hidden">
+  <DashboardTitle />
+  <Container>
+    <div className="w-full my-12 flex flex-col lg:flex-row gap-12">
+      <div className="w-full lg:w-2/5"> {/* Full width on small screens */}
+        {/* Sidebar */}
+        <Sidebar />
       </div>
+      <div className="w-full lg:w-3/5"> {/* Full width on small screens */}
+        {children}
+      </div>
+    </div>
+  </Container>
+</div>
+
     </>
   );
 }

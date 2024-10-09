@@ -26,3 +26,13 @@ export const ratingRecipe = async (ratingData: FieldValues) => {
     throw new Error(error);
   }
 };
+
+export const postRecipe = async (postData: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.post("/items/recipes", postData);
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};

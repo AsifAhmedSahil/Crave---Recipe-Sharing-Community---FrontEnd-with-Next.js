@@ -5,7 +5,7 @@
 /* eslint-disable prettier/prettier */
 import { useMutation } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
-import { addComment, ratingRecipe } from "../services/recipeServices";
+import { addComment, postRecipe, ratingRecipe } from "../services/recipeServices";
 import { toast } from "sonner";
 
 export const useAddComment = () => {
@@ -27,6 +27,19 @@ export const useAddRating = () => {
     onSuccess: () => {
       toast.success("Rate this recipe");
     },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+
+export const useAddRecipe = () => {
+  return useMutation<any, Error, FieldValues>({
+    mutationKey: ["ADD_RECIPE"],
+    mutationFn: async (postData) => await postRecipe(postData),
+    // onSuccess: () => {
+    //   toast.success("Post this recipe Successfully");
+    // },
     onError: (error) => {
       toast.error(error.message);
     },
