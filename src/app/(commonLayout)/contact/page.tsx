@@ -194,7 +194,7 @@ const ContactPage = () => {
           </h2>
           <p className="">
             Phone:{" "}
-            <Link href="tel:+1234567890" className="text-white hover:underline">
+            <Link href="tel:+1234567890" className=" hover:underline">
               +1 (234) 567-890
             </Link>
           </p>

@@ -8,9 +8,13 @@ import React from "react";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
 import { useDeleteRecipe } from "../hooks/recipe.hook";
+import parse from 'html-react-parser';
+import DOMPurify from "dompurify";
 
 const FbCard = ({ item }: { item: any }) => {
-    useDeleteRecipe
+  
+  const sanitizedDescription = DOMPurify.sanitize(item.description);
+  const description = parse(sanitizedDescription);
     const {mutate: handleDeleteRecipe} = useDeleteRecipe()
     const handleDeleteItem = async (item: { _id: string }) => {
         console.log(item._id)
@@ -39,7 +43,7 @@ const FbCard = ({ item }: { item: any }) => {
       };
   return (
     <div className="container mx-auto flex justify-center md:justify-start">
-      <div className="max-w-sm w-full">
+      <div className=" w-full">
         <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out overflow-hidden">
           {/* Image Section */}
           <Image
@@ -52,7 +56,7 @@ const FbCard = ({ item }: { item: any }) => {
           {/* Content Section */}
           <div className="p-4">
             <h2 className="text-xl font-semibold text-gray-800">{item.title}</h2>
-            <p className="text-gray-600 mt-2">{item.description}</p>
+            <p className="text-gray-600 mt-2">{description}</p>
             {/* Additional Info */}
             <div className="flex justify-between items-center mt-3">
               <span className="text-sm text-gray-500">{item.type}</span>

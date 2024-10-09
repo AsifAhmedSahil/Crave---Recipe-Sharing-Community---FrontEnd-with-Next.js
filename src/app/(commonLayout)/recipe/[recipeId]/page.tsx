@@ -7,6 +7,8 @@ import { useAddComment, useAddRating } from "@/src/hooks/recipe.hook";
 import { getCurrentUser } from "@/src/services/AuthService";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import parse from 'html-react-parser';
+import DOMPurify from "dompurify";
 
 interface Ingredient {
   _id: string;
@@ -48,6 +50,7 @@ interface RecipeData {
 }
 
 const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
+  
     const [recipeData, setRecipeData] = useState<RecipeData | null>(null);
   const [newComment, setNewComment] = useState("");
   const [rating, setRating] = useState("");
@@ -61,7 +64,14 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
         cache: "no-store",
       });
       const { data } = await res.json();
-      setRecipeData(data);
+      const sanitizedDescription = DOMPurify.sanitize(data.description);
+      const sanitizedInstruction = DOMPurify.sanitize(data.instructions);
+      const description = parse(sanitizedDescription);
+      const instructions = parse(sanitizedInstruction);
+  const updatedData ={
+    ...data,description,instructions
+  }
+      setRecipeData(updatedData);
     };
 
     fetchRecipe();
@@ -151,6 +161,8 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
 
   console.log(recipeData?.comments, "************");
   if (!recipeData) return <div>Loading...</div>;
+
+  
 
   return (
     <div className="container mx-auto py-10">

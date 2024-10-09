@@ -4,6 +4,11 @@ import { useUser } from "@/src/context/user.provider";
 import { useAddRecipe } from "@/src/hooks/recipe.hook";
 import { useState } from "react";
 import { toast } from "sonner"; // Import toast for notifications
+import ReactQuill from "react-quill"; // Import React Quill
+import "react-quill/dist/quill.snow.css"; // Import styles
+import DOMPurify from 'dompurify'; // Import DOMPurify
+import parse from 'html-react-parser';
+
 
 interface Ingredient {
   name: string;
@@ -11,16 +16,15 @@ interface Ingredient {
 }
 
 const RecipePostForm: React.FC = () => {
-    const {user} = useUser()
-    const {mutate: handleRecipePost} = useAddRecipe()
+  const { user } = useUser();
+  const { mutate: handleRecipePost } = useAddRecipe();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [ingredients, setIngredients] = useState<Ingredient[]>([
     { name: "", quantity: "" },
   ]);
   const [instructions, setInstructions] = useState<string>("");
-  const [image, setImage] = useState<File | null>(null); // Change to File type
-  
+  const [image, setImage] = useState<File | null>(null);
   const [isDeleted] = useState<boolean>(false);
   const [type] = useState<string>("free");
   const [fileError, setFileError] = useState<string | null>(null);
@@ -79,22 +83,27 @@ const RecipePostForm: React.FC = () => {
       const dataFromCloud = await response.json();
       const uploadedImageUrl = dataFromCloud.secure_url;
 
+      // Sanitize the description and instructions
+      const sanitizedDescription = DOMPurify.sanitize(description);
+      
+      const sanitizedInstructions = DOMPurify.sanitize(instructions);
+     
+
       const recipeData = {
         title,
-        description,
+        description: sanitizedDescription,
         ingredients,
-        instructions,
+        instructions: sanitizedInstructions,
         image: uploadedImageUrl, // Use uploaded image URL
-        creator:user?._id,
+        creator: user?._id,
         isDeleted,
         type,
       };
 
       // Log the recipe data or send it to your backend
       console.log(recipeData);
-      handleRecipePost(recipeData)
+      handleRecipePost(recipeData);
       toast.success("Recipe posted successfully!", { id: loadingToastId });
-
     } catch (error) {
       toast.error("Something went wrong. Please try again later.", { id: loadingToastId });
     }
@@ -103,7 +112,7 @@ const RecipePostForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit} className="p-6 space-y-4 bg-black rounded-lg shadow-lg">
       <h1 className="text-2xl font-bold text-white">Post a Recipe</h1>
-      
+
       <input
         type="text"
         placeholder="Title"
@@ -113,12 +122,11 @@ const RecipePostForm: React.FC = () => {
         required
       />
 
-      <textarea
-        placeholder="Description"
+      <ReactQuill
         value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        className="w-full p-3 border border-gray-600 rounded bg-gray-800 text-white placeholder-gray-400"
-        required
+        onChange={setDescription}
+        placeholder="Description"
+        className="bg-gray-800 text-white"
       />
 
       {ingredients.map((ingredient, index) => (
@@ -160,12 +168,11 @@ const RecipePostForm: React.FC = () => {
         Add Ingredient
       </button>
 
-      <textarea
-        placeholder="Instructions"
+      <ReactQuill
         value={instructions}
-        onChange={(e) => setInstructions(e.target.value)}
-        className="w-full p-3 border border-gray-600 rounded bg-gray-800 text-white placeholder-gray-400"
-        required
+        onChange={setInstructions}
+        placeholder="Instructions"
+        className="bg-gray-800 text-white"
       />
 
       <input
@@ -176,12 +183,30 @@ const RecipePostForm: React.FC = () => {
       />
       {fileError && <p className="text-red-500 text-sm">{fileError}</p>}
 
-      
-
       <button type="submit" className="w-full p-3 text-white bg-blue-600 rounded hover:bg-blue-500">
         Post Recipe
       </button>
     </form>
+  );
+};
+
+// Component to display the recipe
+const RecipeDetails: React.FC<{ title: string, description: string, ingredients: Ingredient[], instructions: string, image: string }> = ({ title, description, ingredients, instructions, image }) => {
+  return (
+    <div className="recipe-details">
+      <h1 className="text-2xl font-bold">{title}</h1>
+      <img src={image} alt={title} className="w-full h-auto rounded-lg" />
+      <div className="description" dangerouslySetInnerHTML={{ __html: description }} />
+      <h2 className="text-xl font-bold">Ingredients</h2>
+      <ul>
+        {ingredients.map((ingredient, index) => (
+          <li key={index}>
+            {ingredient.quantity} {ingredient.name}
+          </li>
+        ))}
+      </ul>
+      <div className="instructions" dangerouslySetInnerHTML={{ __html: instructions }} />
+    </div>
   );
 };
 

@@ -21,7 +21,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex ">
       {/* Toggle button for mobile */}
       <button
         className="fixed top-4 left-4 lg:hidden p-2 text-white bg-blue-600 rounded-full"
@@ -32,9 +32,9 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`fixed lg:static top-0 left-0 h-full bg-gray-800 text-white p-4 transition-transform duration-300 transform ${
+        className={`fixed lg:static top-0 left-0 h-full  bg-gray-800 text-white p-4 transition-transform duration-300 transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 lg:w-64`}
+        } lg:translate-x-0 lg:w-full lg:h-full`}
       >
         {/* Close button inside the sidebar */}
         <button

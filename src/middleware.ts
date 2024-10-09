@@ -7,15 +7,10 @@ import { getCurrentUser } from './services/AuthService';
 
 const AuthRoutes = ['/login', '/register'];
 
-// const roleBasedRoutes = {
-//     USER: [/^\/profile/],
-//     ADMIN: [/^\/admin/],
-// };
 const roleBasedRoutes = {
-    USER: [/^\/profile/, /^\/profile\/.*/],
-    ADMIN: [/^\/admin/, /^\/admin\/.*/, /^\/admin-dashboard$/], // Include admin-dashboard here
+    USER: [/^\/dashboard$/, /^\/dashboard\/.*/],
+    ADMIN: [/^\/admin/, /^\/admin\/.*/, /^\/admin-dashboard$/],
 };
-
 
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
@@ -32,23 +27,23 @@ export async function middleware(request: NextRequest) {
 
     // If user is logged in, check their role
     if (user.role === 'USER') {
-        // Allow access to user profile routes only
-        if (pathname.match(roleBasedRoutes.USER[0])) {
+        // Allow access to user dashboard routes
+        if (roleBasedRoutes.USER.some(route => pathname.match(route))) {
             return NextResponse.next();
         }
         // Redirect users trying to access admin routes
-        if (pathname.match(roleBasedRoutes.ADMIN[0])) {
+        if (roleBasedRoutes.ADMIN.some(route => pathname.match(route))) {
             return NextResponse.redirect(new URL('/', request.url));
         }
     }
 
     if (user.role === 'ADMIN') {
-        // Allow access to admin routes only
-        if (pathname.match(roleBasedRoutes.ADMIN[0])) {
+        // Allow access to admin routes
+        if (roleBasedRoutes.ADMIN.some(route => pathname.match(route))) {
             return NextResponse.next();
         }
-        // Redirect admins trying to access user profile routes
-        if (pathname.match(roleBasedRoutes.USER[0])) {
+        // Redirect admins trying to access user dashboard routes
+        if (roleBasedRoutes.USER.some(route => pathname.match(route))) {
             return NextResponse.redirect(new URL('/', request.url));
         }
     }
@@ -59,5 +54,5 @@ export async function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-    matcher: ['/login', '/register', '/profile', '/profile/:page*', '/admin', '/admin/:page*','/admin-dashboard'],
+    matcher: ['/login', '/register', '/profile', '/profile/:page*', '/admin', '/admin/:page*', '/admin-dashboard', '/dashboard/:page*'],
 };

@@ -14,7 +14,7 @@ const MyRecipeId = async ({ params }: { params: { myRecipeId: string } }) => {
     console.log(data)
 
   return (
-    <div className='grid lg:grid-cols-2 md:grid-cols-2 gap-4 '>
+    <div className='grid lg:grid-cols-1 md:grid-cols-2 gap-4 '>
         {
             data?.map((item:any) =>(
                 <FbCard key={item._id} item={item}/>
