@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-sort-props */
-'use client'
+"use client";
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -65,10 +65,9 @@ export const Navbar = () => {
             <p className="font-bold text-inherit text-xl">Crave</p>
           </NextLink>
         </NavbarBrand>
-        
       </NavbarContent>
       <NavbarContent justify="center">
-      <ul className="hidden lg:flex gap-4 justify-start ml-2">
+        <ul className="hidden lg:flex gap-4 justify-start ml-2">
           {siteConfig.navItems.map((item) => (
             <NavbarItem key={item.href}>
               <NextLink
@@ -95,9 +94,19 @@ export const Navbar = () => {
         </NavbarItem>
         {user?.email ? (
           <>
-            <NavbarItem className="hidden sm:flex gap-2">
-              <Button>Dashboard</Button>
-            </NavbarItem>
+            {user.role === "USER" ? (
+              <NavbarItem className="hidden sm:flex gap-2">
+                <Link href={"/dashboard"}>
+                  <Button>Dashboard</Button>
+                </Link>
+              </NavbarItem>
+            ) : (
+              <NavbarItem className="hidden sm:flex gap-2">
+                <Link href={"/admin-dashboard"}>
+                  <Button>Dashboard</Button>
+                </Link>
+              </NavbarItem>
+            )}
             <NavbarItem className="hidden sm:flex gap-2">
               <NavbarDropdown />
             </NavbarItem>
@@ -133,7 +142,15 @@ export const Navbar = () => {
               </Link>
             </NavbarMenuItem>
           ))}
-          <Button>Dashboard</Button>
+          {user?.role === "USER" ? (
+            <Link href={"/dashboard"} className="w-full ">
+              <Button className="w-full bg-green-600">Dashboard</Button>
+            </Link>
+          ) : (
+            <Link href={"/admin-dashboard"}>
+              <Button>Dashboard</Button>
+            </Link>
+          )}
         </div>
       </NavbarMenu>
     </NextUINavbar>

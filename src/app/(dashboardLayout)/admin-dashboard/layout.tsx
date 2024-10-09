@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import { AdminNavbar } from "@/src/components/AdminNavbar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,6 +14,7 @@ export default function AdminDashboardLayout({
 }>) {
   return (
     <div>
+      <AdminNavbar/>
       Admin Dashboard Sidebar
       {children}
     </div>
