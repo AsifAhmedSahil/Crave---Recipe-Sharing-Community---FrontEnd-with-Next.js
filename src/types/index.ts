@@ -11,6 +11,7 @@ export interface IUser {
   email: any;
   username: any;
   role: any;
+  bio: any;
   profilePhoto: any;
   status: any;
   followerIds: any;
