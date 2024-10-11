@@ -20,6 +20,17 @@ export const registerUser = async (userData: FieldValues) => {
     throw new Error(error);
   }
 };
+export const registerAdmin = async (userData: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.post("/auth/adminRegister", userData);
+
+    
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
 
 export const loginUser = async (userData: FieldValues) => {
   try {
@@ -38,9 +49,12 @@ export const loginUser = async (userData: FieldValues) => {
 
 export const forgotPassword = async (userData: FieldValues) => {
   try {
-    const { data } = await axiosInstance.post("/auth/forget-password", userData);
+    const { data } = await axiosInstance.post(
+      "/auth/forget-password",
+      userData
+    );
 
-    console.log(data)
+    console.log(data);
 
     return data;
   } catch (error: any) {
@@ -78,24 +92,30 @@ export const resetPassword = async (userData: FieldValues, token: string) => {
   }
 };
 
+export const logout = () => {
+  cookies().delete("accessToken");
+  cookies().delete("refreshToken");
+};
 
-export const logout = () =>{
-    cookies().delete("accessToken")
-    cookies().delete("refreshToken")
+// update user profile
+export const updateUser = async (userData: FieldValues, id: string) => {
+  try {
+    const { data } = await axiosInstance.patch(`users/${id}`, userData);
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
   }
+};
+export const deleteUser = async ( id: string) => {
+  try {
+    const { data } = await axiosInstance.delete(`users/${id}`);
 
-  // update user profile
-  export const updateUser = async (userData: FieldValues,id:string) => {
-    try {
-      const { data } = await axiosInstance.patch(`users/${id}`, userData);
-  
-     
-  
-      return data;
-    } catch (error: any) {
-      throw new Error(error);
-    }
-  };
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
 
 export const getCurrentUser = async () => {
   const accessToken = cookies().get("accessToken")?.value;
@@ -114,12 +134,11 @@ export const getCurrentUser = async () => {
       profilePhoto: decodedToken.profilePhoto,
       status: decodedToken.status,
       bio: decodedToken.bio,
-      type:decodedToken.type,
+      type: decodedToken.type,
       followerIds: decodedToken.followerIds, // Added followerIds
       followingIds: decodedToken.followingIds, // Added followingIds
     };
-    
   }
 
-  return decodedToken
+  return decodedToken;
 };

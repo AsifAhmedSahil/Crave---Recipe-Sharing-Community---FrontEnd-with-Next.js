@@ -102,7 +102,7 @@ export const Navbar = () => {
               </NavbarItem>
             ) : (
               <NavbarItem className="hidden sm:flex gap-2">
-                <Link href={"/admin-dashboard"}>
+                <Link href={"/admin-dashboard/all-user"}>
                   <Button>Dashboard</Button>
                 </Link>
               </NavbarItem>
@@ -147,7 +147,7 @@ export const Navbar = () => {
               <Button className="w-full bg-green-600">Dashboard</Button>
             </Link>
           ) : (
-            <Link href={"/admin-dashboard"}>
+            <Link href={"/admin-dashboard/all-user"}>
               <Button>Dashboard</Button>
             </Link>
           )}

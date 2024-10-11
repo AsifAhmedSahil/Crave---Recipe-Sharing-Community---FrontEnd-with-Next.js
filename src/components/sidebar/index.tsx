@@ -5,7 +5,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { getUserLinks} from "./constants"; // Adjust the path as necessary
+import {  getAdminLinks, getUserLinks} from "./constants"; // Adjust the path as necessary
 import Image from "next/image";
 import logo from "@/src/assets/images/logo.jpg";
 import { Button } from "@nextui-org/button";
@@ -17,13 +17,14 @@ const Sidebar = () => {
   
   
   const userLinks = getUserLinks(user?._id );
+  const adminLinks = getAdminLinks()
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
 
   return (
-    <div className="flex ">
+    <div className="flex  ">
       {/* Toggle button for mobile */}
       <button
         className="fixed top-4 left-4 lg:hidden p-2 text-white bg-blue-600 rounded-full"
@@ -50,16 +51,17 @@ const Sidebar = () => {
           <Image src={logo} alt="logo" className="w-10 h-10 rounded-full" />
           <p className="font-bold text-inherit text-xl">Crave</p>
         </Link>
-        <div className="flex gap-2 w-full">
+        {user?.role === "USER" && <div className="flex gap-2 w-full mb-8">
           <Button className="bg-blue-500 w-1/2" disabled>
             Follower ({user?.followerIds?.length})
           </Button>
           <Button className="bg-blue-500 w-1/2" disabled>
             Following ({user?.followingIds?.length})
           </Button>
-        </div>
+        </div>}
         <nav>
-          <ul className="space-y-4">
+          { user?.role === "USER" ?
+            <ul className="space-y-4">
             {userLinks.map((link, index) => (
               <li key={index}>
                 <Button
@@ -71,7 +73,21 @@ const Sidebar = () => {
                 </Button>
               </li>
             ))}
-          </ul>
+          </ul> :
+           <ul className="space-y-4">
+           {adminLinks.map((link, index) => (
+             <li key={index}>
+               <Button
+                 as={Link}
+                 className="mt-2 w-full rounded-md"
+                 href={link.href}
+               >
+                 {link.label}
+               </Button>
+             </li>
+           ))}
+         </ul>
+          }
         </nav>
       </div>
 

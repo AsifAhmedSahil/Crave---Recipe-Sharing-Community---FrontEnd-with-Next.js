@@ -30,10 +30,7 @@ const FbCard = ({ item }: { item: any }) => {
           if (result.isConfirmed) {
             try {
               handleDeleteRecipe(item._id);
-            //   console.log(res)
-            //   if (res) {
-            //     toast.success('Booking Deleted Successfully', { duration: 2000 });
-            //   }
+            
             } catch (err:any) {
               toast.error('Failed to delete booking',err);
             }

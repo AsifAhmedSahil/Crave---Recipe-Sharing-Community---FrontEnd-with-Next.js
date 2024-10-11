@@ -17,33 +17,28 @@ export default function UserDashboardLayout({
 }>) {
   return (
     <>
-      {/* <div>
-        <UserNavbar/>
-      User Dashboard Sidebar
-      {children}
-    </div> */}
+   
       {/* <UserNavbar /> */}
       <div className="overflow-x-hidden ">
-  <div className="sticky top-0 z-10 bg-white hidden lg:block">
-    <DashboardTitle />
-  </div>
-  <div className="sticky top-0 z-10 bg-white  block lg:hidden">
-  <UserNavbar />
-  </div>
-  <Container>
-    <div className="w-full  my-12 flex flex-col lg:flex-row gap-12">
-      <div className="w-full lg:w-2/5 sticky top-0 z-10 ">
-        {/* Sidebar */}
-        <Sidebar />
+        <div className="sticky top-0 z-10 bg-white hidden lg:block">
+          <DashboardTitle />
+        </div>
+        <div className="sticky top-0 z-10 bg-white  block lg:hidden">
+          <UserNavbar />
+        </div>
+        <Container>
+          <div className="w-full  my-12 flex flex-col lg:flex-row gap-12">
+            <div className="w-full lg:w-2/5 sticky top-0 z-10 ">
+              {/* Sidebar */}
+              <Sidebar />
+            </div>
+            <div className="w-full lg:w-3/5 overflow-y-auto max-h-[calc(100vh-3rem)]">
+              {/* Set max height based on your layout */}
+              {children}
+            </div>
+          </div>
+        </Container>
       </div>
-      <div className="w-full lg:w-3/5 overflow-y-auto max-h-[calc(100vh-3rem)]">
-        {/* Set max height based on your layout */}
-        {children}
-      </div>
-    </div>
-  </Container>
-</div>
-
     </>
   );
 }

@@ -80,9 +80,9 @@ const RegisterPage = () => {
       handleRegistration(userData);
       
 
+            toast.success("User Registration successful", { id: loadingToastId });
       //   if(isSuccess){
 
-      //       toast.success("Registration successful", { id: loadingToastId });
       //   }
 
       // Navigate to login or another page here
