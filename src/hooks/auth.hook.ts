@@ -1,7 +1,7 @@
 /* eslint-disable padding-line-between-statements */
 import { useMutation } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
-import { forgotPassword, loginUser, registerUser, resetPassword } from "../services/AuthService";
+import { forgotPassword, loginUser, registerUser, resetPassword, updateUser } from "../services/AuthService";
 import { toast } from "sonner";
 
 /* eslint-disable prettier/prettier */
@@ -38,6 +38,16 @@ export const useForgetPassword = () => {
     onSuccess: () => {
       toast.success("Check Your Email.");
     },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+export const useUpdateUSer = () => {
+  return useMutation<any, Error, { userData: any; id: string }>({
+    mutationKey: ["USER_UPDATE_USER"],
+    mutationFn: async ({userData,id}) => await updateUser(userData,id),
+    
     onError: (error) => {
       toast.error(error.message);
     },

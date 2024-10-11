@@ -84,6 +84,22 @@ export const logout = () =>{
     cookies().delete("refreshToken")
   }
 
+  // update user profile
+  export const updateUser = async (userData: FieldValues,id:string) => {
+    try {
+      const { data } = await axiosInstance.patch(`users/${id}`, userData);
+  
+      if (data.success) {
+        cookies().set("accessToken", data?.data?.accessToken);
+        cookies().set("refreshToken", data?.data?.refreshToken);
+      }
+  
+      return data;
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  };
+
 export const getCurrentUser = async () => {
   const accessToken = cookies().get("accessToken")?.value;
 

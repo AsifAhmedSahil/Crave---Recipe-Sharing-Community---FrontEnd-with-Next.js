@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable react/jsx-sort-props */
+/* eslint-disable padding-line-between-statements */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable import/order */
 /* eslint-disable prettier/prettier */
@@ -15,13 +18,13 @@ import { FieldValues, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import registerValidationSchema from "@/src/schemas/register.schema";
 import { toast } from "sonner";
-import { registerUser } from "@/src/services/AuthService";
-import { useMutation } from "@tanstack/react-query";
+
 import { useUserRegistration } from "@/src/hooks/auth.hook";
 
 const RegisterPage = () => {
 
     const {mutate: handleRegistration} = useUserRegistration()
+    
 
 
   const [file, setFile] = useState<File | null>(null);
@@ -73,6 +76,7 @@ const RegisterPage = () => {
       console.log(userData)
     //    handleRegistration(userData)
     handleRegistration(userData)
+    
       
     //   if(isSuccess){
 
