@@ -5,8 +5,8 @@
 /* eslint-disable import/order */
 /* eslint-disable prettier/prettier */
 
-
 "use client";
+
 import Form from "@/src/components/form/Form";
 import FormInput from "@/src/components/form/FormInput";
 import { Button } from "@nextui-org/button";
@@ -22,10 +22,8 @@ import { toast } from "sonner";
 import { useUserRegistration } from "@/src/hooks/auth.hook";
 
 const RegisterPage = () => {
-
-    const {mutate: handleRegistration} = useUserRegistration()
-    
-
+  const { mutate: handleRegistration,data } = useUserRegistration();
+  
 
   const [file, setFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
@@ -55,10 +53,13 @@ const RegisterPage = () => {
     formData.append("cloud_name", "djbpo9xg5"); // Adjust as needed
 
     try {
-      const response = await fetch("https://api.cloudinary.com/v1_1/djbpo9xg5/image/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/djbpo9xg5/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -68,24 +69,27 @@ const RegisterPage = () => {
       const profilePhoto = dataFromCloud.secure_url;
 
       // Here, you can include the image URL in your registration data
-    //   console.log({ ...data, profilePhoto }); 
+      //   console.log({ ...data, profilePhoto });
 
       const userData = {
-        ...data,profilePhoto
-      }
-      console.log(userData)
-    //    handleRegistration(userData)
-    handleRegistration(userData)
-    
+        ...data,
+        profilePhoto,
+      };
+      console.log(userData);
+      //    handleRegistration(userData)
+      handleRegistration(userData);
       
-    //   if(isSuccess){
 
-    //       toast.success("Registration successful", { id: loadingToastId });
-    //   }
+      //   if(isSuccess){
+
+      //       toast.success("Registration successful", { id: loadingToastId });
+      //   }
 
       // Navigate to login or another page here
     } catch (error) {
-      toast.error("Something went wrong. Please try again later.", { duration: 2000 });
+      toast.error("Something went wrong. Please try again later.", {
+        duration: 2000,
+      });
     }
   };
 
@@ -93,7 +97,9 @@ const RegisterPage = () => {
     <div className="flex h-[calc(100vh-200px)] w-full items-center justify-center">
       <div className="w-full lg:w-1/2 text-center py-8">
         <h3 className="my-2 text-2xl font-bold">Register</h3>
-        <p className="mb-4">Want To Create An Account? Let&lsquo;s Dive In...</p>
+        <p className="mb-4">
+          Want To Create An Account? Let&lsquo;s Dive In...
+        </p>
         <div className="w-[80%] mx-auto">
           <Form
             onSubmit={onSubmit}
@@ -118,11 +124,13 @@ const RegisterPage = () => {
               <FormInput name="password" label="Password" type="password" />
             </div>
             <div className="mb-4">
-              <label className="block mb-2 text-sm font-medium text-white">Upload Your Photo</label>
+              <label className="block mb-2 text-sm font-medium text-white">
+                Upload Your Photo
+              </label>
               <input
                 type="file"
                 onChange={handleFileChange}
-                className={`mt-1 block w-full px-3 py-2 border ${fileError ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+                className={`mt-1 block w-full px-3 py-2 border ${fileError ? "border-red-500" : "border-gray-300"} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
               />
               {fileError && <p className="text-red-500 text-sm">{fileError}</p>}
             </div>
@@ -153,4 +161,3 @@ const RegisterPage = () => {
 };
 
 export default RegisterPage;
-

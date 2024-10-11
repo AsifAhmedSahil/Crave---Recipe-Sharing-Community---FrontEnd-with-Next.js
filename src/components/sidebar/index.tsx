@@ -15,6 +15,7 @@ const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useUser();
   
+  
   const userLinks = getUserLinks(user?._id );
 
   const toggleSidebar = () => {
@@ -51,10 +52,10 @@ const Sidebar = () => {
         </Link>
         <div className="flex gap-2 w-full">
           <Button className="bg-blue-500 w-1/2" disabled>
-            Follower ({user?.followerIds.length})
+            Follower ({user?.followerIds?.length})
           </Button>
           <Button className="bg-blue-500 w-1/2" disabled>
-            Following ({user?.followingIds.length})
+            Following ({user?.followingIds?.length})
           </Button>
         </div>
         <nav>

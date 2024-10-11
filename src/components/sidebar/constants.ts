@@ -36,11 +36,7 @@ export const getUserLinks = (user:any) => {
         label: "My Recipe",
         // icon: <FaUser />,
       },
-      {
-        href: "/settings",
-        label: "Settings",
-        // icon: <FaCog />,
-      },
+      
     ];
   };
   

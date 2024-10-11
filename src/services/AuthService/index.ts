@@ -89,10 +89,7 @@ export const logout = () =>{
     try {
       const { data } = await axiosInstance.patch(`users/${id}`, userData);
   
-      if (data.success) {
-        cookies().set("accessToken", data?.data?.accessToken);
-        cookies().set("refreshToken", data?.data?.refreshToken);
-      }
+     
   
       return data;
     } catch (error: any) {

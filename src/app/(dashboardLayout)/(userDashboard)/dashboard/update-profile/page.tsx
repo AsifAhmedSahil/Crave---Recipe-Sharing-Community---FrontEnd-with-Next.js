@@ -75,7 +75,7 @@ const UpdateProfile: React.FC = () => {
     const userData = {
       name,
       username,
-      email,
+      // email,
       bio,
       profilePhoto: uploadedImageUrl || user?.profilePhoto, // Use new URL if available, otherwise keep the existing one
     };
@@ -145,6 +145,7 @@ const UpdateProfile: React.FC = () => {
         type="email"
         placeholder="Email"
         value={email}
+        disabled
         defaultValue={user?.email}
         onChange={(e) => setEmail(e.target.value)}
         className="w-full p-3 border border-gray-600 rounded bg-gray-800 text-white placeholder-gray-400"
