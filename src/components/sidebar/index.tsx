@@ -49,11 +49,11 @@ const Sidebar = () => {
           <Image src={logo} alt="logo" className="w-10 h-10 rounded-full" />
           <p className="font-bold text-inherit text-xl">Crave</p>
         </Link>
-        <div className="flex gap-2">
-          <Button className="bg-blue-500" disabled>
+        <div className="flex gap-2 w-full">
+          <Button className="bg-blue-500 w-1/2" disabled>
             Follower ({user?.followerIds.length})
           </Button>
-          <Button className="bg-blue-500" disabled>
+          <Button className="bg-blue-500 w-1/2" disabled>
             Following ({user?.followingIds.length})
           </Button>
         </div>
