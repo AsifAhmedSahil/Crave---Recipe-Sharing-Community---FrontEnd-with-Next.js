@@ -6,17 +6,18 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
 
 
 export interface IUser {
-  _id: string;
-  name: string;
-  role: string;
-  email: string;
-  status: string;
-  username: string;
-  profilePhoto: string;
-  createdAt?: string;
-  updatedAt?: string;
-  __v?: number;
+  _id: any;
+  name: any;
+  email: any;
+  username: any;
+  role: any;
+  profilePhoto: any;
+  status: any;
+  followerIds: any;
+  followingIds: any;
+  type: any; // Ensure 'type' is included in the IUser interface
 }
+
 
 export interface IInput {
   variant?: "flat" | "bordered" | "faded" | "underlined";

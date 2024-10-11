@@ -14,6 +14,7 @@ import { useUser } from "@/src/context/user.provider";
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useUser();
+  
   const userLinks = getUserLinks(user?._id );
 
   const toggleSidebar = () => {
@@ -48,6 +49,14 @@ const Sidebar = () => {
           <Image src={logo} alt="logo" className="w-10 h-10 rounded-full" />
           <p className="font-bold text-inherit text-xl">Crave</p>
         </Link>
+        <div className="flex gap-2">
+          <Button className="bg-blue-500" disabled>
+            Follower ({user?.followerIds.length})
+          </Button>
+          <Button className="bg-blue-500" disabled>
+            Following ({user?.followingIds.length})
+          </Button>
+        </div>
         <nav>
           <ul className="space-y-4">
             {userLinks.map((link, index) => (

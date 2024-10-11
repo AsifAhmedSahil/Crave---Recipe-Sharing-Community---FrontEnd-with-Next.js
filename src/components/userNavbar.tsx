@@ -54,13 +54,13 @@ import Image from "next/image";
     return (
       <NextUINavbar maxWidth="xl" position="sticky">
         <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
-          <NavbarBrand as="li" className="gap-3 max-w-fit">
+          {/* <NavbarBrand as="li" className="gap-3 max-w-fit">
             <NextLink className="flex justify-start items-center gap-2" href="/">
               <Image src={logo} alt="logo" className="w-10 h-10 rounded-full"/>
               <p className="font-bold text-inherit text-xl">Crave</p>
             </NextLink>
-          </NavbarBrand>
-          <ul className="hidden lg:flex gap-4 justify-start ml-2">
+          </NavbarBrand> */}
+          {/* <ul className="hidden lg:flex gap-4 justify-start ml-2">
             {siteConfig.navItems.map((item) => (
               <NavbarItem key={item.href}>
                 <NextLink
@@ -75,7 +75,7 @@ import Image from "next/image";
                 </NextLink>
               </NavbarItem>
             ))}
-          </ul>
+          </ul> */}
         </NavbarContent>
   
         <NavbarContent
@@ -89,10 +89,10 @@ import Image from "next/image";
   
         <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
           <ThemeSwitch />
-          <NavbarMenuToggle />
+          {/* <NavbarMenuToggle /> */}
         </NavbarContent>
   
-        <NavbarMenu>
+        {/* <NavbarMenu>
           
           <div className="mx-4 mt-2 flex flex-col gap-2">
             {siteConfig.navMenuItems.map((item, index) => (
@@ -113,7 +113,7 @@ import Image from "next/image";
               </NavbarMenuItem>
             ))}
           </div>
-        </NavbarMenu>
+        </NavbarMenu> */}
       </NextUINavbar>
     );
   };

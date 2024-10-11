@@ -100,7 +100,11 @@ export const getCurrentUser = async () => {
       role: decodedToken.role,
       profilePhoto: decodedToken.profilePhoto,
       status: decodedToken.status,
+      type:decodedToken.type,
+      followerIds: decodedToken.followerIds, // Added followerIds
+      followingIds: decodedToken.followingIds, // Added followingIds
     };
+    
   }
 
   return decodedToken

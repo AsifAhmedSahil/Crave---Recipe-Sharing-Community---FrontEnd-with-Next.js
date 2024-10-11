@@ -24,8 +24,11 @@ export default function UserDashboardLayout({
     </div> */}
       {/* <UserNavbar /> */}
       <div className="overflow-x-hidden ">
-  <div className="sticky top-0 z-10 bg-white">
+  <div className="sticky top-0 z-10 bg-white hidden lg:block">
     <DashboardTitle />
+  </div>
+  <div className="sticky top-0 z-10 bg-white  block lg:hidden">
+  <UserNavbar />
   </div>
   <Container>
     <div className="w-full  my-12 flex flex-col lg:flex-row gap-12">
