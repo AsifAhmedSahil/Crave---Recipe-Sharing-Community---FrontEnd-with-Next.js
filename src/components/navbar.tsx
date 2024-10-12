@@ -107,6 +107,19 @@ export const Navbar = () => {
                 </Link>
               </NavbarItem>
             )}
+            {user?.type === "GENERAL" ? (
+            <NavbarItem className="hidden sm:flex gap-2 ">
+            <Link href={"/dashboard/profile"}>
+              <Button className="bg-yellow-600">Try Premium</Button>
+            </Link>
+          </NavbarItem>
+        ) : (
+          <NavbarItem className="hidden sm:flex gap-2">
+            <Link href={"/admin-dashboard/all-user"}>
+              <Button className="bg-yellow-600">Premium</Button>
+            </Link>
+          </NavbarItem>
+          )}
             <NavbarItem className="hidden sm:flex gap-2">
               <NavbarDropdown />
             </NavbarItem>
@@ -149,6 +162,15 @@ export const Navbar = () => {
           ) : (
             <Link href={"/admin-dashboard/all-user"}>
               <Button>Dashboard</Button>
+            </Link>
+          )}
+          {user?.type === "GENERAL" ? (
+            <Link href={"/dashboard/profile"} className="w-full ">
+              <Button className="w-full bg-green-600">Try Premium</Button>
+            </Link>
+          ) : (
+            <Link href={"/admin-dashboard/all-user"}>
+              <Button>Premium</Button>
             </Link>
           )}
         </div>

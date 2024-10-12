@@ -43,7 +43,7 @@ const Pagination: React.FC<PaginationProps> = ({
         <li
           key={number}
           className={`flex w-[46px] h-[46px] rounded-full items-center justify-center ${
-            number === activePage ? "bg-black font-bold" : ""
+            number === activePage ? " font-bold" : ""
           }`}
         >
           <button className="bg-transparent" onClick={() => paginate(number)}>
