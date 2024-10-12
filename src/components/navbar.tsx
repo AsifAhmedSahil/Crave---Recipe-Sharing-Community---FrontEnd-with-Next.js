@@ -107,7 +107,7 @@ export const Navbar = () => {
                 </Link>
               </NavbarItem>
             )}
-            {user?.type === "GENERAL" ? (
+            {user.role === "USER"  && user?.type === "GENERAL" ? (
             <NavbarItem className="hidden sm:flex gap-2 ">
             <Link href={"/dashboard/profile"}>
               <Button className="bg-yellow-600">Try Premium</Button>

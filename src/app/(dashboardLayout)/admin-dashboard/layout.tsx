@@ -2,6 +2,7 @@
 
 import Container from "@/src/components/Container";
 import DashboardTitle from "@/src/components/DashboardTitle";
+import Footer from "@/src/components/footer";
 import Sidebar from "@/src/components/sidebar";
 import { UserNavbar } from "@/src/components/userNavbar";
 
@@ -39,6 +40,7 @@ export default function AdminDashboardLayout({
             </div>
           </div>
         </Container>
+        <Footer/>
       </div>
     </>
   );

@@ -53,10 +53,10 @@ const Sidebar = () => {
         </Link>
         {user?.role === "USER" && <div className="flex gap-2 w-full mb-8">
           <Button className="bg-blue-500 w-1/2" disabled>
-            Follower ({user?.followerIds?.length})
+            Follower ({user?.followerIds?.length || 0})
           </Button>
           <Button className="bg-blue-500 w-1/2" disabled>
-            Following ({user?.followingIds?.length})
+            Following ({user?.followingIds?.length || 0})
           </Button>
         </div>}
         <nav>

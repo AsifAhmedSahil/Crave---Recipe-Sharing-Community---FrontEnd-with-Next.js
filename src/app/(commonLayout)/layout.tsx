@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import Footer from "@/src/components/footer";
 import { Navbar } from "@/src/components/navbar";
 import { Metadata } from "next";
 import React from "react";
@@ -15,6 +16,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
       <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
         {children}
       </main>
+      <Footer/>
     </div>
   );
 };
