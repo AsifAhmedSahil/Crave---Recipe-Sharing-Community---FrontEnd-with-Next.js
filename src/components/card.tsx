@@ -7,11 +7,15 @@ import Link from "next/link";
 import React from "react";
 import parse from "html-react-parser";
 import DOMPurify from "dompurify";
+import { useUser } from "../context/user.provider";
+import { Button } from "@nextui-org/button";
+import { CiLock } from "react-icons/ci";
 
 const Card = ({ item }: { item: any }) => {
   // Adjusted prop destructuring
   const sanitizedDescription = DOMPurify.sanitize(item.description);
   const description = parse(sanitizedDescription);
+  const {user} = useUser()
 
   return (
     <div className="container mx-auto flex justify-center md:justify-start">
@@ -67,12 +71,20 @@ const Card = ({ item }: { item: any }) => {
           </div>
           <Link href={`/recipe/${item._id}`}>
             <div className="w-[70%] mx-auto text-center">
-              <button
+              { user?.type === 'GENERAL' && item.type === "premium" ?
+                <Button
+                as={Link}
+                href={"/premium"}
+                type="button"
+                className="w-full text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
+              >
+                View Recipe <CiLock className="size-5 font-bold"/>
+              </Button> : <Button
                 type="button"
                 className="w-full text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
               >
                 View Recipe
-              </button>
+              </Button>}
             </div>
           </Link>
         </div>

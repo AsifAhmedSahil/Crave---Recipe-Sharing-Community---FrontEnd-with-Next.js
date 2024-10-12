@@ -36,6 +36,8 @@ import {
     useEffect(() => {
       handleUser();
     }, [isLoading]);
+
+    
   
     return (
       <UserContext.Provider value={{ user, isLoading, setUser, setIsLoading }}>
