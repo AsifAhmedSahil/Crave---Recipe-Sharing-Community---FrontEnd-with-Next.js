@@ -2,7 +2,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-sort-props */
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { FaBars, FaTimes } from "react-icons/fa";
 import {  getAdminLinks, getUserLinks} from "./constants"; // Adjust the path as necessary
@@ -11,9 +11,31 @@ import logo from "@/src/assets/images/logo.jpg";
 import { Button } from "@nextui-org/button";
 import { useUser } from "@/src/context/user.provider";
 
+
+interface UserData {
+  _id: string;
+  followerIds: string[];
+  followingIds: string[];
+  role: string;
+}
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const { user } = useUser();
+  console.log(user)
+  console.log(userData)
+
+  const fetchUser = async () => {
+    const res = await fetch(`http://localhost:5000/api/v1/users/${user?._id}`, {
+        cache: "no-store"
+    });
+    const { data } = await res.json();
+    setUserData(data);
+};
+
+useEffect(() => {
+    fetchUser();
+}, [user?.followingIds,user?.followerIds]);
   
   
   const userLinks = getUserLinks(user?._id );
@@ -53,10 +75,11 @@ const Sidebar = () => {
         </Link>
         {user?.role === "USER" && <div className="flex gap-2 w-full mb-8">
           <Button className="bg-blue-500 w-1/2" disabled>
-            Follower ({user?.followerIds?.length || 0})
+            Follower ({userData?.followerIds?.length || 0})
+            
           </Button>
           <Button className="bg-blue-500 w-1/2" disabled>
-            Following ({user?.followingIds?.length || 0})
+            Following ({userData?.followingIds?.length || 0})
           </Button>
         </div>}
         <nav>

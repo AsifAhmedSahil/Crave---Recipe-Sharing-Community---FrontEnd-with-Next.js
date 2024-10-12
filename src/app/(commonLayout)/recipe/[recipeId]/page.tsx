@@ -3,13 +3,19 @@
 /* eslint-disable prettier/prettier */
 "use client";
 import { useUser } from "@/src/context/user.provider";
-import { useAddComment, useAddRating } from "@/src/hooks/recipe.hook";
+import {
+  useAddComment,
+  useAddRating,
+  useFollowUser,
+  useUnFollowUser,
+} from "@/src/hooks/recipe.hook";
 import { getCurrentUser } from "@/src/services/AuthService";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import parse from 'html-react-parser';
+import parse from "html-react-parser";
 import DOMPurify from "dompurify";
 import { FaClock } from "react-icons/fa";
+import { Button } from "@nextui-org/button";
 
 interface Ingredient {
   _id: string;
@@ -18,23 +24,22 @@ interface Ingredient {
 }
 
 interface Comment {
-    _id: string;
-    user: string;
-    content: string;
-    name: string;
-    profilePhoto: string;
-    createdAt: Date;
-  }
-  interface upvote {
-    _id:string
-  }
-  interface Rating {
-    _id: string;        // Unique identifier for the rating
-    userId: string;     // ID of the user who rated the recipe
-    recipeId: string;   // ID of the recipe that was rated
-    stars: number;      // Rating value (e.g., 1 to 5)
-  }
-  
+  _id: string;
+  user: string;
+  content: string;
+  name: string;
+  profilePhoto: string;
+  createdAt: Date;
+}
+interface upvote {
+  _id: string;
+}
+interface Rating {
+  _id: string; // Unique identifier for the rating
+  userId: string; // ID of the user who rated the recipe
+  recipeId: string; // ID of the recipe that was rated
+  stars: number; // Rating value (e.g., 1 to 5)
+}
 
 interface RecipeData {
   _id: string;
@@ -43,42 +48,78 @@ interface RecipeData {
   description: string;
   ingredients: Ingredient[];
   instructions: string;
+  creator: string;
   averageRating: number;
   comments: Comment[];
-  ratings:Rating[];
-  upvotes: upvote[];  // New field for upvotes
+  ratings: Rating[];
+  upvotes: upvote[]; // New field for upvotes
   downvotes: number;
   tags: string[]; // Array of tags (e.g., ["Vegetarian", "Gluten-Free"])
   cookingTime: number;
 }
+interface UserData {
+  _id: string;
+  followerIds: string[];
+  followingIds: string[];
+  role: string;
+}
 
 const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
-  
-    const [recipeData, setRecipeData] = useState<RecipeData | null>(null);
+  const [recipeData, setRecipeData] = useState<RecipeData | null>(null);
   const [newComment, setNewComment] = useState("");
   const [rating, setRating] = useState("");
   const user = useUser();
   const { mutate: handleAddComment } = useAddComment();
   const { mutate: handleAddRating } = useAddRating();
+  const { mutate: handleFollowUser } = useFollowUser();
+  const { mutate: handleUnFollowUser } = useUnFollowUser();
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [isFollowing, setIsFollowing] = useState(false); 
 
   useEffect(() => {
     const fetchRecipe = async () => {
-      const res = await fetch(`http://localhost:5000/api/v1/items/recipe/${params.recipeId}`, {
-        cache: "no-store",
-      });
+      const res = await fetch(
+        `http://localhost:5000/api/v1/items/recipe/${params.recipeId}`,
+        {
+          cache: "no-store",
+        }
+      );
       const { data } = await res.json();
       const sanitizedDescription = DOMPurify.sanitize(data.description);
       const sanitizedInstruction = DOMPurify.sanitize(data.instructions);
       const description = parse(sanitizedDescription);
       const instructions = parse(sanitizedInstruction);
-  const updatedData ={
-    ...data,description,instructions
-  }
+      const updatedData = {
+        ...data,
+        description,
+        instructions,
+      };
+      console.log(updatedData);
       setRecipeData(updatedData);
     };
 
     fetchRecipe();
   }, [params.recipeId]);
+
+  console.log(user, userData);
+
+  const fetchUser = async () => {
+    const res = await fetch(
+      `http://localhost:5000/api/v1/users/${recipeData?.creator}`,
+      {
+        cache: "no-store",
+      }
+    );
+    const { data } = await res.json();
+    setUserData(data);
+    if (data.followerIds.includes(user?.user?._id)) {
+      setIsFollowing(true); // Set follow state if following
+    } else {
+      setIsFollowing(false); // Set follow state if not following
+    }
+  };
+
+  
 
   const handleCommentSubmit = async (e: any) => {
     e.preventDefault();
@@ -90,26 +131,26 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
         name: user?.user?.name || "Anonymous", // Provide a default name if undefined
         profilePhoto: user?.user?.profilePhoto || "", // Provide a default value if undefined
       };
-  
+
       // Optimistically update the comments
       const newCommentData: Comment = {
         _id: Date.now().toString(), // Temporary ID, replace with the actual ID after server response
         ...userData,
         createdAt: new Date(),
-        user: ""
+        user: "",
       };
-  
+
       setRecipeData((prevData) => {
         if (!prevData) return prevData; // Ensure prevData is not null
-  
+
         return {
           ...prevData,
           comments: [newCommentData, ...prevData.comments], // Add new comment to the beginning
         };
       });
-  
+
       setNewComment(""); // Clear the input field
-  
+
       // Send the comment to the server
       await handleAddComment(userData);
       // Optionally, you can refetch the recipe data after adding the comment
@@ -121,14 +162,13 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
     setRecipeData((prevData) => {
       if (!prevData) return prevData;
       const upvoteData = {
-        recipeId:recipeData?._id,
-        userId: user?.user?._id
-
-      }
+        recipeId: recipeData?._id,
+        userId: user?.user?._id,
+      };
 
       return {
         ...prevData,
-        upvotes: [...prevData.upvotes] ,
+        upvotes: [...prevData.upvotes],
       };
     });
 
@@ -147,25 +187,40 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
 
     // Optionally, send the downvote to the backend
   };
+  const handleFollow = () => {
+    const userData = {
+      followerId: user?.user?._id,
+      followingId: recipeData?.creator,
+    };
+    console.log(userData);
+    handleFollowUser(userData);
+    setIsFollowing(true); 
+  };
+  const handleunfollow = () => {
+    const userData = {
+      followerId: user?.user?._id,
+      followingId: recipeData?.creator,
+    };
+    console.log(userData);
+    handleUnFollowUser(userData);
+    setIsFollowing(false); 
+  };
 
   const handleRatingSubmit = (e: any) => {
     e.preventDefault();
     const ratingData = {
-        recipeId:recipeData?._id,
-        userId:user?.user?._id,
-        stars: parseInt(rating)
-    }
+      recipeId: recipeData?._id,
+      userId: user?.user?._id,
+      stars: parseInt(rating),
+    };
     console.log("Rating submitted:", ratingData);
     // Here, you can also send the rating to the backend if needed
     setRating(""); // Clear the input field after submission
-    handleAddRating(ratingData)
-    
+    handleAddRating(ratingData);
   };
 
-  console.log(recipeData?.comments, "************");
+  // console.log(recipeData?.creator, "************");
   if (!recipeData) return <div>Loading...</div>;
-
-  
 
   return (
     <div className="container mx-auto py-10">
@@ -196,17 +251,28 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
               ))}
             </ul>
             <h2 className="text-xl font-semibold mb-2 text-black mt-8 flex gap-2">
-              <div className="flex justify-center items-center gap-2">Cooking Time <FaClock /> </div>: <div>
-              {recipeData.cookingTime} Minutes
+              <div className="flex justify-center items-center gap-2">
+                Cooking Time <FaClock />{" "}
               </div>
+              : <div>{recipeData.cookingTime} Minutes</div>
             </h2>
             <div className="mb-4 mt-4">
-          {recipeData.tags.map((tag) => (
-            <span key={tag} className="inline-block bg-blue-200 text-blue-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded">
-              {tag}
-            </span>
-          ))}
-        </div>
+              {recipeData.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="inline-block bg-blue-200 text-blue-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+            {isFollowing ? (
+          <Button onClick={handleunfollow}>Unfollow</Button>
+        ) : (
+          <Button onClick={handleFollow}>Follow</Button>
+        )}
+
+            {/* <Button onClick={handleunfollow}>Unfollow</Button> */}
           </div>
         </div>
         <div className="mb-6">
@@ -216,39 +282,43 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
           <p className="text-gray-600">{recipeData.instructions}</p>
         </div>
         <div className="flex flex-col lg:flex-row justify-between items-center mb-6">
-            <div className="flex gap-4 items-center flex-col lg:flex-row ">
+          <div className="flex gap-4 items-center flex-col lg:flex-row ">
+            <span className="text-lg font-semibold text-black">
+              Average Rating: {recipeData.averageRating} ⭐
+            </span>
 
-          <span className="text-lg font-semibold text-black">
-            Average Rating: {recipeData.averageRating} ⭐
-          </span>
-          
-          <form onSubmit={handleRatingSubmit} className="flex space-x-2">
-            <input
-              type="number"
-              min="1"
-              max="5"
-              value={rating}
-              onChange={(e) => setRating(e.target.value)}
-              placeholder="Rate (1-5)"
-              className="border border-gray-300 rounded-lg p-2 w-48"
-              required
-            />
-            <button type="submit" className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 rounded-lg px-4 py-2">
-              Review
-            </button>
-          </form>
-            </div>
+            <form onSubmit={handleRatingSubmit} className="flex space-x-2">
+              <input
+                type="number"
+                min="1"
+                max="5"
+                value={rating}
+                onChange={(e) => setRating(e.target.value)}
+                placeholder="Rate (1-5)"
+                className="border border-gray-300 rounded-lg p-2 w-48"
+                required
+              />
+              <button
+                type="submit"
+                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 rounded-lg px-4 py-2"
+              >
+                Review
+              </button>
+            </form>
+          </div>
           <div className="flex space-x-4">
-            <button 
-            // onClick={handleUpvote}
-             className="text-green-500">
-              Upvote 
+            <button
+              // onClick={handleUpvote}
+              className="text-green-500"
+            >
+              Upvote
               {/* ({recipeData.upvotes}) */}
             </button>
-            <button 
-            // onClick={handleDownvote} 
-             className="text-red-500">
-              Downvote 
+            <button
+              // onClick={handleDownvote}
+              className="text-red-500"
+            >
+              Downvote
               {/* ({recipeData.downvotes}) */}
             </button>
           </div>

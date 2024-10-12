@@ -5,7 +5,7 @@
 /* eslint-disable prettier/prettier */
 import { useMutation } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
-import { addComment, deleteRecipe, postRecipe, ratingRecipe } from "../services/recipeServices";
+import { addComment, deleteRecipe, followUser, postRecipe, ratingRecipe, unFollowUser } from "../services/recipeServices";
 import { toast } from "sonner";
 
 export const useAddComment = () => {
@@ -51,6 +51,30 @@ export const useDeleteRecipe = () => {
     mutationFn: async (id) => await deleteRecipe(id),
     onSuccess: () => {
       toast.success("Recipe Deleted Successfully");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+export const useFollowUser = () => {
+  return useMutation<any, Error, FieldValues>({
+    mutationKey: ["FOLLOW"],
+    mutationFn: async (userData) => await followUser(userData),
+    onSuccess: () => {
+      toast.success("Following...");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+export const useUnFollowUser = () => {
+  return useMutation<any, Error, FieldValues>({
+    mutationKey: ["UNFOLLOW"],
+    mutationFn: async (userData) => await unFollowUser(userData),
+    onSuccess: () => {
+      toast.success("unfollow user...");
     },
     onError: (error) => {
       toast.error(error.message);

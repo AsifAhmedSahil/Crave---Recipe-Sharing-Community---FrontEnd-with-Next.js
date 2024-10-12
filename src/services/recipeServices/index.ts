@@ -45,3 +45,21 @@ export const deleteRecipe = async (id: string) => {
     throw new Error(error);
   }
 };
+export const followUser = async (userData: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.post("users/follow",userData);
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+export const unFollowUser = async (userData: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.post("users/unfollow",userData);
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
