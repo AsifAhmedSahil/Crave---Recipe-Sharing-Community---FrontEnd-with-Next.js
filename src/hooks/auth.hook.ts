@@ -1,7 +1,7 @@
 /* eslint-disable padding-line-between-statements */
 import { useMutation } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
-import { deleteUser, forgotPassword, loginUser, registerAdmin, registerUser, resetPassword, updateUser } from "../services/AuthService";
+import { blockUser, deleteUser, forgotPassword, loginUser, registerAdmin, registerUser, resetPassword, updateUser } from "../services/AuthService";
 import { toast } from "sonner";
 
 /* eslint-disable prettier/prettier */
@@ -70,6 +70,16 @@ export const useDeleteUser = () => {
   return useMutation<any, Error, {  id: string }>({
     mutationKey: ["USER_DELETE_USER"],
     mutationFn: async ({id}) => await deleteUser(id),
+    
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+export const useBlockUser = () => {
+  return useMutation<any, Error, {  id: string }>({
+    mutationKey: ["USER_BLOCK_USER"],
+    mutationFn: async ({id}) => await blockUser(id),
     
     onError: (error) => {
       toast.error(error.message);

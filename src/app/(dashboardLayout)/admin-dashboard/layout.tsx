@@ -29,7 +29,7 @@ export default function AdminDashboardLayout({
          
         </div>
         <Container>
-          <div className="w-full  my-12 flex flex-col lg:flex-row gap-12">
+          <div className="w-full  lg:my-12 flex flex-col lg:flex-row gap-12">
             <div className="w-full lg:w-2/5 sticky top-0 z-10 mt-32">
               {/* Sidebar */}
               <Sidebar />

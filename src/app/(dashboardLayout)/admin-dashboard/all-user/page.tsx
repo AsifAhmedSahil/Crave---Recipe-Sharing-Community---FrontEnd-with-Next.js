@@ -3,7 +3,7 @@
 /* eslint-disable prettier/prettier */
 'use client'
 import UserActions from '@/src/components/UserActions'
-import { useDeleteUser } from '@/src/hooks/auth.hook'
+import { useBlockUser, useDeleteUser } from '@/src/hooks/auth.hook'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import Swal from 'sweetalert2'
@@ -12,6 +12,7 @@ const AllUser =() => {
     const [users, setUsers] = useState<any[]>([]);
 
     const { mutate: handleDeleteUser } = useDeleteUser();
+    const { mutate: handleBlockUser } = useBlockUser();
   useEffect(() => {
     const fetchUsers = async () => {
       const res = await fetch("http://localhost:5000/api/v1/users/", { cache: "no-store" });
@@ -22,15 +23,26 @@ const AllUser =() => {
   }, [users]);
 
 
-    const handleBlockUser = async (userId: string) => {
-        try {
-          // Call your API to block the user
-        //   await fetch(`http://localhost:5000/api/v1/users/block/${userId}`, { method: 'POST' });
-        //   toast.success(`User ${userId} blocked.`);
-        //   setUsers(users.map(user => user._id === userId ? { ...user, status: 'BLOCKED' } : user));
-        } catch (error) {
-          toast.error("Failed to block user.");
+    const blockUser = async (userId: string) => {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "Are You want to block this user?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            handleBlockUser({id: userId})
+          
+          } catch (err:any) {
+            toast.error('Failed to delete booking',err);
+          }
+
         }
+      });
       };
     
     //   handleDeleteUser({id: userId})
@@ -59,6 +71,7 @@ const AllUser =() => {
     
   return (
     <div>
+      <h2 className='text-center text-3xl lg:text-5xl font-bold mt-8 lg:mb-16'>All User</h2>
         {
             <div className="overflow-x-auto">
             <table className="min-w-full ">
@@ -92,7 +105,7 @@ const AllUser =() => {
                 </td>
                 <UserActions 
                 userId={user._id} 
-                onBlockUser={handleBlockUser} 
+                onBlockUser={blockUser} 
                 onDeleteUser={DeleteUser} 
               />
               </tr>

@@ -116,6 +116,15 @@ export const deleteUser = async ( id: string) => {
     throw new Error(error);
   }
 };
+export const blockUser = async ( id: string) => {
+  try {
+    const { data } = await axiosInstance.patch(`/users/${id}/block`);
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
 
 export const getCurrentUser = async () => {
   const accessToken = cookies().get("accessToken")?.value;
