@@ -13,16 +13,19 @@ import { Button } from "@nextui-org/button";
 import loginGif from "@/src/Animation - 1727688639002.json";
 import Lottie from "lottie-react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import registerValidationSchema from "@/src/schemas/register.schema";
 import { toast } from "sonner";
-
+import { useRouter } from 'next/navigation'
 import { useUserRegistration } from "@/src/hooks/auth.hook";
+import { useUser } from "@/src/context/user.provider";
 
 const RegisterPage = () => {
-  const { mutate: handleRegistration,data } = useUserRegistration();
+  const { mutate: handleRegistration,isPending,isSuccess } = useUserRegistration();
+  const router = useRouter()
+  const {setIsLoading} = useUser()
   
 
   const [file, setFile] = useState<File | null>(null);
@@ -68,8 +71,6 @@ const RegisterPage = () => {
       const dataFromCloud = await response.json();
       const profilePhoto = dataFromCloud.secure_url;
 
-      // Here, you can include the image URL in your registration data
-      //   console.log({ ...data, profilePhoto });
 
       const userData = {
         ...data,
@@ -78,21 +79,26 @@ const RegisterPage = () => {
       console.log(userData);
       //    handleRegistration(userData)
       handleRegistration(userData);
+      setIsLoading(true)
+      router.push("/")
+
+      toast.success("User Registration successful", { id: loadingToastId });
       
-
-            toast.success("User Registration successful", { id: loadingToastId });
-      //   if(isSuccess){
-
-      //   }
-
-      // Navigate to login or another page here
+       
     } catch (error) {
       toast.error("Something went wrong. Please try again later.", {
         duration: 2000,
       });
     }
+    
   };
 
+  useEffect(()=>{
+    if(!isPending && isSuccess){
+      
+      router.push("/")
+    }
+},[isPending,isSuccess])
   return (
     <div className="flex h-[calc(100vh-200px)] w-full items-center justify-center">
       <div className="w-full lg:w-1/2 text-center py-8">
