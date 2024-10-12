@@ -8,8 +8,8 @@ import React from "react";
 import parse from 'html-react-parser';
 import DOMPurify from "dompurify";
 
-const Card = (item: any) => {
-  const sanitizedDescription = DOMPurify.sanitize(item.item.description);
+const Card = ({ item }: { item: any }) => {  // Adjusted prop destructuring
+  const sanitizedDescription = DOMPurify.sanitize(item.description);
   const description = parse(sanitizedDescription);
   
   return (
@@ -17,7 +17,7 @@ const Card = (item: any) => {
       <div className="max-w-sm w-full"> {/* Ensure full width for each card */}
         <div className="bg-white relative shadow-lg hover:shadow-xl transition duration-500 rounded-lg">
           <Image
-            src={item.item.image}
+            src={item.image}
             width={400}
             height={200}
             alt="thumbnail_image"
@@ -25,15 +25,27 @@ const Card = (item: any) => {
           />
           <div className="py-4 px-5">
             <h2 className="text-2xl font-semibold text-black">
-              {item.item.title}
+              {item.title}
             </h2>
+            <p className="text-gray-600">{item.ingredients.length} ingredients</p>
+            <p className="text-gray-600">
+              {item.ingredients.slice(0, 2).map((ing:any) => `${ing.name}`).join(', ')}
+              {item.ingredients.length > 2 && ` ... +${item.ingredients.length - 2}`}
+            </p>
             <p className="text-gray-600">{description}</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {item.tags.map((tag: string) => (
+                <span key={tag} className="inline-block bg-blue-200 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
+                  {tag}
+                </span>
+              ))}
+            </div>
             {/* Additional content goes here */}
           </div>
           <div className="absolute top-2 right-2 py-2 px-4 bg-black text-yellow-600 rounded-lg">
-            <span className="font-medium">{item.item.type}</span>
+            <span className="font-medium">{item.type}</span>
           </div>
-          <Link href={`/recipe/${item.item._id}`}>
+          <Link href={`/recipe/${item._id}`}>
             <div className="w-[70%] mx-auto text-center">
               <button
                 type="button"

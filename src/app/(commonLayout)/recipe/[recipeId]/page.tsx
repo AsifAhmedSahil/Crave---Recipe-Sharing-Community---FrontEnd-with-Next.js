@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import parse from 'html-react-parser';
 import DOMPurify from "dompurify";
+import { FaClock } from "react-icons/fa";
 
 interface Ingredient {
   _id: string;
@@ -47,6 +48,8 @@ interface RecipeData {
   ratings:Rating[];
   upvotes: upvote[];  // New field for upvotes
   downvotes: number;
+  tags: string[]; // Array of tags (e.g., ["Vegetarian", "Gluten-Free"])
+  cookingTime: number;
 }
 
 const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
@@ -170,8 +173,8 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
         <h1 className="text-3xl font-bold mb-4 text-black">
           {recipeData.title}
         </h1>
-        <div className="flex">
-          <div className="w-2/3 pr-4">
+        <div className="flex flex-col lg:flex-row">
+          <div className="w-full lg:w-2/3 pr-4">
             <Image
               src={recipeData.image}
               width={500}
@@ -181,7 +184,7 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
             />
             <p className="text-gray-700 mb-4">{recipeData.description}</p>
           </div>
-          <div className="w-1/3">
+          <div className="w-full lg:w-1/3 ">
             <h2 className="text-xl font-semibold mb-2 text-black">
               Ingredients:
             </h2>
@@ -192,6 +195,18 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
                 </li>
               ))}
             </ul>
+            <h2 className="text-xl font-semibold mb-2 text-black mt-8 flex gap-2">
+              <div className="flex justify-center items-center gap-2">Cooking Time <FaClock /> </div>: <div>
+              {recipeData.cookingTime} Minutes
+              </div>
+            </h2>
+            <div className="mb-4 mt-4">
+          {recipeData.tags.map((tag) => (
+            <span key={tag} className="inline-block bg-blue-200 text-blue-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded">
+              {tag}
+            </span>
+          ))}
+        </div>
           </div>
         </div>
         <div className="mb-6">
@@ -200,8 +215,8 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
           </h2>
           <p className="text-gray-600">{recipeData.instructions}</p>
         </div>
-        <div className="flex justify-between items-center mb-6">
-            <div className="flex gap-4 items-center">
+        <div className="flex flex-col lg:flex-row justify-between items-center mb-6">
+            <div className="flex gap-4 items-center flex-col lg:flex-row ">
 
           <span className="text-lg font-semibold text-black">
             Average Rating: {recipeData.averageRating} ⭐
