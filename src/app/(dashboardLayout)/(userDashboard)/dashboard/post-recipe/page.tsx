@@ -28,6 +28,10 @@ const RecipePostForm: React.FC = () => {
   const [isDeleted] = useState<boolean>(false);
   const [type] = useState<string>("free");
   const [fileError, setFileError] = useState<string | null>(null);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [cookingTime, setCookingTime] = useState<number | null>(null);
+
+  const availableTags = ["Spicy", "Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free"];
 
   const handleIngredientChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const newIngredients = [...ingredients];
@@ -52,6 +56,12 @@ const RecipePostForm: React.FC = () => {
     } else {
       setFileError(null);
     }
+  };
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -98,6 +108,8 @@ const RecipePostForm: React.FC = () => {
         creator: user?._id,
         isDeleted,
         type,
+        tags: selectedTags, // Add selected tags
+        cookingTime,
       };
 
       // Log the recipe data or send it to your backend
@@ -126,7 +138,7 @@ const RecipePostForm: React.FC = () => {
         value={description}
         onChange={setDescription}
         placeholder="Description"
-        className="bg-gray-800 text-white"
+        className="bg-white text-black "
       />
 
       {ingredients.map((ingredient, index) => (
@@ -172,7 +184,7 @@ const RecipePostForm: React.FC = () => {
         value={instructions}
         onChange={setInstructions}
         placeholder="Instructions"
-        className="bg-gray-800 text-white"
+        className="bg-white text-black"
       />
 
       <input
@@ -182,6 +194,33 @@ const RecipePostForm: React.FC = () => {
         required
       />
       {fileError && <p className="text-red-500 text-sm">{fileError}</p>}
+
+       {/* Tags Selection */}
+       <div className="mb-4">
+        <h3 className="text-lg font-semibold text-white">Select Tags:</h3>
+        <div className="flex flex-wrap gap-2">
+          {availableTags.map((tag) => (
+            <label key={tag} className="flex items-center">
+              <input
+                type="checkbox"
+                checked={selectedTags.includes(tag)}
+                onChange={() => toggleTag(tag)}
+                className="mr-2"
+              />
+              {tag}
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Cooking Time Input */}
+      <input
+        type="number"
+        placeholder="Cooking Time (in minutes)"
+        value={cookingTime || ""}
+        onChange={(e) => setCookingTime(e.target.value ? parseInt(e.target.value) : null)}
+        className="w-full p-3 border border-gray-600 rounded bg-gray-800 text-white placeholder-gray-400"
+      />
 
       <button type="submit" className="w-full p-3 text-white bg-blue-600 rounded hover:bg-blue-500">
         Post Recipe
@@ -196,7 +235,7 @@ const RecipeDetails: React.FC<{ title: string, description: string, ingredients:
     <div className="recipe-details">
       <h1 className="text-2xl font-bold">{title}</h1>
       <img src={image} alt={title} className="w-full h-auto rounded-lg" />
-      <div className="description" dangerouslySetInnerHTML={{ __html: description }} />
+      <div className="description text-white" dangerouslySetInnerHTML={{ __html: description }} />
       <h2 className="text-xl font-bold">Ingredients</h2>
       <ul>
         {ingredients.map((ingredient, index) => (

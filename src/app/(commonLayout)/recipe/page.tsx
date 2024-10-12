@@ -4,6 +4,8 @@
 import React, { useEffect, useState } from "react";
 import Card from "@/src/components/card";
 import Pagination from "@/src/components/Pagination";
+import parse from 'html-react-parser';
+import DOMPurify from "dompurify";
 
 const RecipePage = () => {
   const [data, setData] = useState<any[]>([]);
@@ -22,7 +24,16 @@ const RecipePage = () => {
         cache: "no-store",
       });
       const result = await res.json();
-      setData(result.data);
+      console.log(result); // Log to verify structure
+
+      // Sanitize and parse the data
+      const sanitizedData = result.data.map((item:any) => ({
+        ...item,
+        description: DOMPurify.sanitize(item.description),
+        instructions: DOMPurify.sanitize(item.instructions),
+      }));
+
+      setData(sanitizedData);
     };
 
     fetchData();
@@ -132,7 +143,7 @@ const RecipePage = () => {
   <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-4 mb-6">
   {filteredProducts.length > 0 ? (
           filteredProducts.map((item) => (
-            <Card key={item._id} item={item} />
+            <Card key={item._id} item={{ ...item, description: parse(item.description), instructions: parse(item.instructions) }}/>
           ))
         ) : (
           <div className="col-span-full text-center text-3xl font-bold italic my-32">
