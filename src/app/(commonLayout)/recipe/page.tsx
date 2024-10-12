@@ -12,7 +12,7 @@ const RecipePage = () => {
   const [ingredients, setIngredients] = useState("");
   const [cookingTime, setCookingTime] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 8;
+  const productsPerPage = 6;
 
   console.log(selectedTags);
 
