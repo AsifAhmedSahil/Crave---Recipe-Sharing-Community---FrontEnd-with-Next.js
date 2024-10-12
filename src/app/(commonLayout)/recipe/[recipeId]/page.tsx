@@ -6,8 +6,10 @@ import { useUser } from "@/src/context/user.provider";
 import {
   useAddComment,
   useAddRating,
+  useDownvoteRecipe,
   useFollowUser,
   useUnFollowUser,
+  useUpvoteRecipe,
 } from "@/src/hooks/recipe.hook";
 import { getCurrentUser } from "@/src/services/AuthService";
 import Image from "next/image";
@@ -34,6 +36,9 @@ interface Comment {
 interface upvote {
   _id: string;
 }
+interface downvote {
+  _id: string;
+}
 interface Rating {
   _id: string; // Unique identifier for the rating
   userId: string; // ID of the user who rated the recipe
@@ -53,7 +58,7 @@ interface RecipeData {
   comments: Comment[];
   ratings: Rating[];
   upvotes: upvote[]; // New field for upvotes
-  downvotes: number;
+  downvotes: downvote[];
   tags: string[]; // Array of tags (e.g., ["Vegetarian", "Gluten-Free"])
   cookingTime: number;
 }
@@ -70,38 +75,48 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
   const [rating, setRating] = useState("");
   const user = useUser();
   const { mutate: handleAddComment } = useAddComment();
-  const { mutate: handleAddRating } = useAddRating();
+  const { mutate: handleUpvoteRecipe } = useUpvoteRecipe();
+  const { mutate: handleDownvoteRecipe } = useDownvoteRecipe();
+  const { mutate: handleAddRating, data: ratingData } = useAddRating();
   const { mutate: handleFollowUser } = useFollowUser();
   const { mutate: handleUnFollowUser } = useUnFollowUser();
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [isFollowing, setIsFollowing] = useState(false); 
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [hasUpvoted, setHasUpvoted] = useState(false);
+  const [hasDownvoted, setHasDownvoted] = useState(false);
+
+  const fetchRecipe = async () => {
+    const res = await fetch(
+      `http://localhost:5000/api/v1/items/recipe/${params.recipeId}`,
+      { cache: "no-store" }
+    );
+    const { data } = await res.json();
+    const sanitizedDescription = DOMPurify.sanitize(data.description);
+    const sanitizedInstruction = DOMPurify.sanitize(data.instructions);
+    const description = parse(sanitizedDescription);
+    const instructions = parse(sanitizedInstruction);
+    const updatedData = {
+      ...data,
+      description,
+      instructions,
+    };
+    console.log(updatedData);
+    setRecipeData(updatedData);
+    setHasUpvoted(data.upvotes.includes(user?.user?._id));
+    setHasDownvoted(data.downvotes.includes(user?.user?._id));
+  };
 
   useEffect(() => {
-    const fetchRecipe = async () => {
-      const res = await fetch(
-        `http://localhost:5000/api/v1/items/recipe/${params.recipeId}`,
-        {
-          cache: "no-store",
-        }
-      );
-      const { data } = await res.json();
-      const sanitizedDescription = DOMPurify.sanitize(data.description);
-      const sanitizedInstruction = DOMPurify.sanitize(data.instructions);
-      const description = parse(sanitizedDescription);
-      const instructions = parse(sanitizedInstruction);
-      const updatedData = {
-        ...data,
-        description,
-        instructions,
-      };
-      console.log(updatedData);
-      setRecipeData(updatedData);
-    };
-
     fetchRecipe();
   }, [params.recipeId]);
 
-  console.log(user, userData);
+  useEffect(() => {
+    if (recipeData?.averageRating) {
+      fetchRecipe(); // Refetch when average rating changes
+    }
+  }, [recipeData?.averageRating]);
+
+  console.log(user, recipeData);
 
   const fetchUser = async () => {
     const res = await fetch(
@@ -118,8 +133,6 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
       setIsFollowing(false); // Set follow state if not following
     }
   };
-
-  
 
   const handleCommentSubmit = async (e: any) => {
     e.preventDefault();
@@ -159,33 +172,43 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
   };
 
   const handleUpvote = () => {
-    setRecipeData((prevData) => {
-      if (!prevData) return prevData;
-      const upvoteData = {
-        recipeId: recipeData?._id,
-        userId: user?.user?._id,
-      };
+    const userData = {
+      recipeId: recipeData?._id,
+      userId: user?.user?._id,
+    };
+    
+    if (hasUpvoted) {
+      handleDownvoteRecipe(userData); // You should implement a way to remove the upvote from the backend
+      setHasUpvoted(false);
+    } else {
+       handleUpvoteRecipe(userData);
+      setHasUpvoted(true);
+      if (hasDownvoted) {
+        setHasDownvoted(false); // Remove downvote if switching to upvote
+      }
+    }
 
-      return {
-        ...prevData,
-        upvotes: [...prevData.upvotes],
-      };
-    });
-
-    // Optionally, send the upvote to the backend
+    fetchRecipe();
   };
 
   const handleDownvote = () => {
-    setRecipeData((prevData) => {
-      if (!prevData) return prevData;
+    const userData = {
+      recipeId: recipeData?._id,
+      userId: user?.user?._id,
+    };
+    
+    if (hasDownvoted) {
+       handleDownvoteRecipe(userData); // You should implement a way to remove the downvote from the backend
+      setHasDownvoted(false);
+    } else {
+       handleDownvoteRecipe(userData);
+      setHasDownvoted(true);
+      if (hasUpvoted) {
+        setHasUpvoted(false); // Remove upvote if switching to downvote
+      }
+    }
 
-      return {
-        ...prevData,
-        downvotes: prevData.downvotes + 1,
-      };
-    });
-
-    // Optionally, send the downvote to the backend
+    fetchRecipe(); 
   };
   const handleFollow = () => {
     const userData = {
@@ -194,7 +217,7 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
     };
     console.log(userData);
     handleFollowUser(userData);
-    setIsFollowing(true); 
+    setIsFollowing(true);
   };
   const handleunfollow = () => {
     const userData = {
@@ -203,7 +226,7 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
     };
     console.log(userData);
     handleUnFollowUser(userData);
-    setIsFollowing(false); 
+    setIsFollowing(false);
   };
 
   const handleRatingSubmit = (e: any) => {
@@ -267,10 +290,10 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
               ))}
             </div>
             {isFollowing ? (
-          <Button onClick={handleunfollow}>Unfollow</Button>
-        ) : (
-          <Button onClick={handleFollow}>Follow</Button>
-        )}
+              <Button onClick={handleunfollow}>Unfollow</Button>
+            ) : (
+              <Button onClick={handleFollow}>Follow</Button>
+            )}
 
             {/* <Button onClick={handleunfollow}>Unfollow</Button> */}
           </div>
@@ -307,20 +330,12 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
             </form>
           </div>
           <div className="flex space-x-4">
-            <button
-              // onClick={handleUpvote}
-              className="text-green-500"
-            >
-              Upvote
-              {/* ({recipeData.upvotes}) */}
-            </button>
-            <button
-              // onClick={handleDownvote}
-              className="text-red-500"
-            >
-              Downvote
-              {/* ({recipeData.downvotes}) */}
-            </button>
+          <button onClick={handleUpvote} className="text-green-500">
+            Upvote ({recipeData.upvotes.length + (hasUpvoted ? 1 : 0)})
+          </button>
+          <button onClick={handleDownvote} className="text-red-500">
+            Downvote ({recipeData.downvotes.length + (hasDownvoted ? 1 : 0)})
+          </button>
           </div>
         </div>
         <div className="mt-8">

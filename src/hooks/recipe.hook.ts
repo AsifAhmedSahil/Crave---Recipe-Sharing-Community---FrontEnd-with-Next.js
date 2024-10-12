@@ -5,7 +5,7 @@
 /* eslint-disable prettier/prettier */
 import { useMutation } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
-import { addComment, deleteRecipe, followUser, postRecipe, ratingRecipe, unFollowUser } from "../services/recipeServices";
+import { addComment, deleteRecipe, downvoteRecipe, followUser, postRecipe, ratingRecipe, unFollowUser, upvoteRecipe } from "../services/recipeServices";
 import { toast } from "sonner";
 
 export const useAddComment = () => {
@@ -75,6 +75,31 @@ export const useUnFollowUser = () => {
     mutationFn: async (userData) => await unFollowUser(userData),
     onSuccess: () => {
       toast.success("unfollow user...");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+export const useUpvoteRecipe = () => {
+  return useMutation<any, Error, FieldValues>({
+    mutationKey: ["UPVOTE"],
+    mutationFn: async (userData) => await upvoteRecipe(userData),
+    onSuccess: () => {
+      toast.success("Upvoted recipe...");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+
+export const useDownvoteRecipe = () => {
+  return useMutation<any, Error, FieldValues>({
+    mutationKey: ["DOWNVOTE"],
+    mutationFn: async (userData) => await downvoteRecipe(userData),
+    onSuccess: () => {
+      toast.success("downvoted recipe...");
     },
     onError: (error) => {
       toast.error(error.message);

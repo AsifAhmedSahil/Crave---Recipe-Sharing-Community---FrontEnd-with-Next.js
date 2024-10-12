@@ -63,3 +63,21 @@ export const unFollowUser = async (userData: FieldValues) => {
     throw new Error(error);
   }
 };
+export const upvoteRecipe = async (userData: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.post("items/recipe/upvote",userData);
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+export const downvoteRecipe = async (userData: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.post("items/recipe/downvote",userData);
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
