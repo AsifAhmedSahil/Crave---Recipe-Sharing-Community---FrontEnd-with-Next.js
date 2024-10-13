@@ -72,7 +72,7 @@ interface UserData {
 const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
   const [recipeData, setRecipeData] = useState<RecipeData | null>(null);
   const [newComment, setNewComment] = useState("");
-  const [rating, setRating] = useState("");
+  const [rating, setRating] = useState<number>(0);
   const user = useUser();
   const { mutate: handleAddComment } = useAddComment();
   const { mutate: handleUpvoteRecipe } = useUpvoteRecipe();
@@ -108,13 +108,13 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
 
   useEffect(() => {
     fetchRecipe();
-  }, [params.recipeId]);
+  }, [params.recipeId,rating]);
 
   useEffect(() => {
     if (recipeData?.averageRating) {
       fetchRecipe(); // Refetch when average rating changes
     }
-  }, [recipeData?.averageRating]);
+  }, [recipeData?.averageRating,rating]);
 
   console.log(user, recipeData);
 
@@ -232,13 +232,14 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
   const handleRatingSubmit = (e: any) => {
     e.preventDefault();
     const ratingData = {
+      _id:recipeData?.creator,
       recipeId: recipeData?._id,
       userId: user?.user?._id,
-      stars: parseInt(rating),
+      stars: rating,
     };
     console.log("Rating submitted:", ratingData);
     // Here, you can also send the rating to the backend if needed
-    setRating(""); // Clear the input field after submission
+    setRating(ratingData.stars); // Clear the input field after submission
     handleAddRating(ratingData);
   };
 
@@ -315,8 +316,8 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
                 type="number"
                 min="1"
                 max="5"
-                value={rating}
-                onChange={(e) => setRating(e.target.value)}
+                // value={rating}
+                onChange={(e) => setRating(Number(e.target.value))}
                 placeholder="Rate (1-5)"
                 className="border border-gray-300 rounded-lg p-2 w-48"
                 required

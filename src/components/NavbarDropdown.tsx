@@ -42,7 +42,7 @@ const NavbarDropdown = () => {
         <Avatar src={user?.profilePhoto} />
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">
-        <DropdownItem onClick={() => handleNavigation("/profile/my-profile")}>
+        <DropdownItem onClick={() => handleNavigation("/profile")}>
           Profile
         </DropdownItem>
         <DropdownItem onClick={() => handleNavigation("/profile/my-recipe")}>
