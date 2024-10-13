@@ -5,7 +5,7 @@
 /* eslint-disable prettier/prettier */
 import { useMutation } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
-import { addComment, deleteRecipe, downvoteRecipe, followUser, postRecipe, ratingRecipe, unFollowUser, upvoteRecipe } from "../services/recipeServices";
+import { addComment, deleteRecipe, downvoteRecipe, followUser, paymentUser, postRecipe, ratingRecipe, unFollowUser, upvoteRecipe } from "../services/recipeServices";
 import { toast } from "sonner";
 
 export const useAddComment = () => {
@@ -100,6 +100,18 @@ export const useDownvoteRecipe = () => {
     mutationFn: async (userData) => await downvoteRecipe(userData),
     onSuccess: () => {
       toast.success("downvoted recipe...");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+export const usePaymentUser = () => {
+  return useMutation<any, Error, FieldValues>({
+    mutationKey: ["PAYMENT"],
+    mutationFn: async (userData) => await paymentUser(userData),
+    onSuccess: () => {
+      toast.success("Payment Process...");
     },
     onError: (error) => {
       toast.error(error.message);

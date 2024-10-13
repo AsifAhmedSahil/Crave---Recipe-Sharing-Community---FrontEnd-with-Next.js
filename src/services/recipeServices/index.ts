@@ -81,3 +81,12 @@ export const downvoteRecipe = async (userData: FieldValues) => {
     throw new Error(error);
   }
 };
+export const paymentUser = async (userData: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.post("payment/create-payment",userData);
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};

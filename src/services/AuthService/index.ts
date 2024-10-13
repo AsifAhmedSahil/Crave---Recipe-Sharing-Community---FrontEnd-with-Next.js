@@ -126,6 +126,7 @@ export const blockUser = async ( id: string) => {
   }
 };
 
+
 export const getCurrentUser = async () => {
   const accessToken = cookies().get("accessToken")?.value;
 

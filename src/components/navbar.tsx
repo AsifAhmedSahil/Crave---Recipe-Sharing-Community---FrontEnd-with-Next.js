@@ -31,10 +31,35 @@ import {
 import Image from "next/image";
 import NavbarDropdown from "./NavbarDropdown";
 import { useUser } from "../context/user.provider";
-import React from "react";
+import React, { useEffect, useState } from "react";
+interface UserData {
+  _id: string;
+  followerIds: string[];
+  followingIds: string[];
+  role: string;
+  type:string
+}
 
 export const Navbar = () => {
   const { user } = useUser();
+  console.log(user)
+  const [userData, setUserData] = useState<UserData | null>(null);
+
+  const fetchUser = async () => {
+    const res = await fetch(`http://localhost:5000/api/v1/users/${user?._id}`, {
+        cache: "no-store"
+    });
+    const { data } = await res.json();
+    setUserData(data);
+};
+
+useEffect(() => {
+  if (user?._id) {
+    fetchUser();
+  }
+}, [user]);
+console.log(userData)
+
   const searchInput = (
     <Input
       aria-label="Search"
@@ -107,7 +132,7 @@ export const Navbar = () => {
                 </Link>
               </NavbarItem>
             )}
-            {user.role === "USER"  && user?.type === "GENERAL" ? (
+            {userData?.role === "USER"  && userData?.type === "GENERAL" ? (
             <NavbarItem className="hidden sm:flex gap-2 ">
             <Link href={"/premium"}>
               <Button className="bg-yellow-600">Try Premium</Button>
@@ -115,9 +140,9 @@ export const Navbar = () => {
           </NavbarItem>
         ) : (
           <NavbarItem className="hidden sm:flex gap-2">
-            <Link href={"/admin-dashboard/all-user"}>
+            {/* <Link href={"/admin-dashboard/all-user"}> */}
               <Button className="bg-yellow-600">Premium</Button>
-            </Link>
+            {/* </Link> */}
           </NavbarItem>
           )}
             <NavbarItem className="hidden sm:flex gap-2">
@@ -164,7 +189,7 @@ export const Navbar = () => {
               <Button>Dashboard</Button>
             </Link>
           )}
-          {user?.type === "GENERAL" ? (
+          {userData?.type === "GENERAL" ? (
             <Link href={"/dashboard/profile"} className="w-full ">
               <Button className="w-full bg-green-600">Try Premium</Button>
             </Link>
