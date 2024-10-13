@@ -4,7 +4,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-sort-props */
 "use client";
-import ProfileData from "@/src/components/ProfileData";
+
 import { useUser } from "@/src/context/user.provider";
 import { useEffect, useState } from "react";
 

@@ -45,6 +45,16 @@ export const deleteRecipe = async (id: string) => {
     throw new Error(error);
   }
 };
+export const updateRecipe = async (id: string,userData: FieldValues) => {
+  console.log(id,userData)
+  try {
+    const { data } = await axiosInstance.put(`/items/recipe/${id}`,userData);
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
 export const followUser = async (userData: FieldValues) => {
   try {
     const { data } = await axiosInstance.post("users/follow",userData);
