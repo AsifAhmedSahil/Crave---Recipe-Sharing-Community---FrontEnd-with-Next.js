@@ -4,18 +4,42 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import parse from "html-react-parser";
 import DOMPurify from "dompurify";
 import { useUser } from "../context/user.provider";
 import { Button } from "@nextui-org/button";
 import { CiLock } from "react-icons/ci";
 
+
+interface UserData {
+  _id: string;
+  followerIds: string[];
+  followingIds: string[];
+  role: string;
+  type:string
+}
+
 const Card = ({ item }: { item: any }) => {
   // Adjusted prop destructuring
   const sanitizedDescription = DOMPurify.sanitize(item.description);
   const description = parse(sanitizedDescription);
   const {user} = useUser()
+  const [userData, setUserData] = useState<UserData | null>(null);
+
+  const fetchUser = async () => {
+    const res = await fetch(`http://localhost:5000/api/v1/users/${user?._id}`, {
+        cache: "no-store"
+    });
+    const { data } = await res.json();
+    setUserData(data);
+};
+
+useEffect(() => {
+  if (user?._id) {
+    fetchUser();
+  }
+}, [user]);
 
   return (
     <div className="container mx-auto flex justify-center md:justify-start">
@@ -71,7 +95,7 @@ const Card = ({ item }: { item: any }) => {
           </div>
           <Link href={`/recipe/${item._id}`}>
             <div className="w-[70%] mx-auto text-center">
-              { user?.type === 'GENERAL' && item.type === "premium" ?
+              { userData?.type === 'GENERAL' && item.type === "premium" ?
                 <Button
                 as={Link}
                 href={"/premium"}

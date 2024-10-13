@@ -20,6 +20,7 @@ import clsx from "clsx";
 import logo from "@/src/assets/images/logo.jpg";
 import { siteConfig } from "@/src/config/site";
 import { ThemeSwitch } from "@/src/components/theme-switch";
+import { GiQueenCrown } from "react-icons/gi";
 import {
   TwitterIcon,
   GithubIcon,
@@ -141,7 +142,7 @@ console.log(userData)
         ) : (
           <NavbarItem className="hidden sm:flex gap-2">
             {/* <Link href={"/admin-dashboard/all-user"}> */}
-              <Button className="bg-yellow-600">Premium</Button>
+              <Button className="bg-yellow-600" disabled>Premium <GiQueenCrown className="size-5"/></Button>
             {/* </Link> */}
           </NavbarItem>
           )}
@@ -190,7 +191,7 @@ console.log(userData)
             </Link>
           )}
           {userData?.type === "GENERAL" ? (
-            <Link href={"/dashboard/profile"} className="w-full ">
+            <Link href={"/premium"} className="w-full ">
               <Button className="w-full bg-green-600">Try Premium</Button>
             </Link>
           ) : (
