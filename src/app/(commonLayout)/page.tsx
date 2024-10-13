@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import AboutUsHome from "@/src/components/AboutUsHome";
 import Banner from "@/src/components/Banner";
 import NewsLetter from "@/src/components/NewsLetter";

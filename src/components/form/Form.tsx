@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable padding-line-between-statements */
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable prettier/prettier */

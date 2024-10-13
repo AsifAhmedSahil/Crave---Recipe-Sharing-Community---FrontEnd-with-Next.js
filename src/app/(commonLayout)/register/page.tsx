@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-console */
 /* eslint-disable react/jsx-sort-props */
 /* eslint-disable padding-line-between-statements */
@@ -21,6 +22,7 @@ import { toast } from "sonner";
 import { useRouter } from 'next/navigation'
 import { useUserRegistration } from "@/src/hooks/auth.hook";
 import { useUser } from "@/src/context/user.provider";
+import Loading from "@/src/components/Loading";
 
 const RegisterPage = () => {
   const { mutate: handleRegistration,isPending,isSuccess } = useUserRegistration();
@@ -100,6 +102,8 @@ const RegisterPage = () => {
     }
 },[isPending,isSuccess])
   return (
+    <>
+    {isPending && <Loading/>}
     <div className="flex h-[calc(100vh-200px)] w-full items-center justify-center">
       <div className="w-full lg:w-1/2 text-center py-8">
         <h3 className="my-2 text-2xl font-bold">Register</h3>
@@ -163,6 +167,7 @@ const RegisterPage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

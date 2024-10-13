@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable padding-line-between-statements */
 /* eslint-disable import/order */
 /* eslint-disable @typescript-eslint/no-unused-vars */

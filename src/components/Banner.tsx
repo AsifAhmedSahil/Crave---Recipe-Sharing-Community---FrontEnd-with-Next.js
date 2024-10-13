@@ -1,3 +1,7 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/jsx-sort-props */
+/* eslint-disable react/self-closing-comp */
+/* eslint-disable prettier/prettier */
 import React from 'react'
 
 const Banner = () => {

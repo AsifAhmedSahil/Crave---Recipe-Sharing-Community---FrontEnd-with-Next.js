@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable padding-line-between-statements */
+/* eslint-disable no-console */
+/* eslint-disable import/order */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-sort-props */
 "use client";
@@ -22,12 +26,9 @@ import { siteConfig } from "@/src/config/site";
 import { ThemeSwitch } from "@/src/components/theme-switch";
 import { GiQueenCrown } from "react-icons/gi";
 import {
-  TwitterIcon,
-  GithubIcon,
-  DiscordIcon,
-  HeartFilledIcon,
+  
   SearchIcon,
-  Logo,
+
 } from "@/src/components/icons";
 import Image from "next/image";
 import NavbarDropdown from "./NavbarDropdown";
@@ -43,7 +44,7 @@ interface UserData {
 
 export const Navbar = () => {
   const { user } = useUser();
-  console.log(user)
+  console.log(user,"****")
   const [userData, setUserData] = useState<UserData | null>(null);
 
   const fetchUser = async () => {

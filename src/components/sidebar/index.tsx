@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-console */
+/* eslint-disable padding-line-between-statements */
 /* eslint-disable import/order */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-sort-props */

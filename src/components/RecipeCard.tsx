@@ -1,7 +1,9 @@
 /* eslint-disable prettier/prettier */
-import Link from 'next/link'
+/* eslint-disable react/jsx-sort-props */
+/* eslint-disable prettier/prettier */
+
 import React from 'react'
-import { FaLongArrowAltRight } from 'react-icons/fa'
+
 
 const RecipeCard = ({ recipe }:{ recipe :any }) => {
   return (

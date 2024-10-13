@@ -1,4 +1,8 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable import/order */
+/* eslint-disable no-console */
+/* eslint-disable padding-line-between-statements */
+/* eslint-disable prettier/prettier */
 "use server";
 
 import axiosInstance from "@/src/lib/AxiosInstance";

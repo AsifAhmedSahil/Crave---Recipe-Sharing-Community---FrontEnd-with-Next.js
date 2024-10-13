@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/self-closing-comp */
 /* eslint-disable import/order */
 /* eslint-disable react/jsx-sort-props */
 /* eslint-disable react/no-unknown-property */

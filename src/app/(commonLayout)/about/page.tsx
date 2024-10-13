@@ -1,7 +1,7 @@
 /* eslint-disable import/order */
 /* eslint-disable react/jsx-sort-props */
 /* eslint-disable prettier/prettier */
-import { title } from "@/src/components/primitives";
+
 import Image from "next/image";
 
 export default function AboutPage() {
@@ -91,11 +91,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <footer className="text-center mt-12">
-          <p className="">
-            &copy; {new Date().getFullYear()} - Crave. All rights reserved.
-          </p>
-        </footer>
+        
       </div>
     </div>
   );

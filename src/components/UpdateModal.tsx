@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable padding-line-between-statements */
+/* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-sort-props */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect } from 'react';
@@ -77,7 +79,7 @@ const UpdateModal: React.FC<UpdateModalProps> = ({ isOpen, onClose, item, onUpda
           <button onClick={handleUpdate} className="bg-blue-500 text-white px-4 py-2 rounded">
             Update
           </button>
-          <button onClick={onClose} className="ml-2 border px-4 py-2 rounded">
+          <button onClick={onClose} className="ml-2 border px-4 py-2 rounded bg-black">
             Cancel
           </button>
         </div>

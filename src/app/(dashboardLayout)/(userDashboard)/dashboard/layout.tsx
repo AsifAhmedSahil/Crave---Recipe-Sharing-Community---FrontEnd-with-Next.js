@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable import/order */
+/* eslint-disable prettier/prettier */
 import Container from "@/src/components/Container";
 import DashboardTitle from "@/src/components/DashboardTitle";
 import Footer from "@/src/components/footer";

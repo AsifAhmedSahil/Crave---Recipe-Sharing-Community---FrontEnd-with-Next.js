@@ -1,3 +1,7 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable import/order */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react/jsx-sort-props */
 /* eslint-disable padding-line-between-statements */
 /* eslint-disable no-console */
 /* eslint-disable prettier/prettier */
@@ -11,13 +15,13 @@ import {
   useUnFollowUser,
   useUpvoteRecipe,
 } from "@/src/hooks/recipe.hook";
-import { getCurrentUser } from "@/src/services/AuthService";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import parse from "html-react-parser";
 import DOMPurify from "dompurify";
 import { FaClock } from "react-icons/fa";
 import { Button } from "@nextui-org/button";
+import Loading from "@/src/components/Loading";
 
 interface Ingredient {
   _id: string;
@@ -244,7 +248,7 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
   };
 
   // console.log(recipeData?.creator, "************");
-  if (!recipeData) return <div>Loading...</div>;
+  if (!recipeData) return <Loading/>;
 
   return (
     <div className="container mx-auto py-10">

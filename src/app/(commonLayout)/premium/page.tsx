@@ -1,9 +1,12 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable import/order */
 /* eslint-disable padding-line-between-statements */
 /* eslint-disable no-console */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-sort-props */
 // components/PaymentForm.tsx
 'use client'
+import Loading from '@/src/components/Loading';
 import { useUser } from '@/src/context/user.provider';
 import { usePaymentUser } from '@/src/hooks/recipe.hook';
 import React, { useState } from 'react';
@@ -17,7 +20,7 @@ const PaymentForm: React.FC = () => {
     phoneNumber: '',
   });
 
-  const { mutate: handlePayment,data } = usePaymentUser();
+  const { mutate: handlePayment,data,isPending } = usePaymentUser();
   const user = useUser()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,6 +45,8 @@ const PaymentForm: React.FC = () => {
   }
 
   return (
+    <>
+    {isPending && <Loading/>}
     <form onSubmit={handleSubmit} className="max-w-md mx-auto p-4 rounded shadow-md">
       <h2 className="text-2xl text-center font-semibold my-12">Payment Information</h2>
       <p className="text-lg text-center  mb-4">
@@ -129,6 +134,7 @@ const PaymentForm: React.FC = () => {
         Proceed to Payment
       </button>
     </form>
+    </>
   );
 };
 

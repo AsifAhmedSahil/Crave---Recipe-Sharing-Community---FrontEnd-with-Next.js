@@ -1,4 +1,7 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable import/order */
+/* eslint-disable react/jsx-sort-props */
+/* eslint-disable prettier/prettier */
 import React from 'react'
 import RecipeCard from './RecipeCard';
 

@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable import/order */
 /* eslint-disable padding-line-between-statements */
 /* eslint-disable react/jsx-sort-props */
 /* eslint-disable prettier/prettier */

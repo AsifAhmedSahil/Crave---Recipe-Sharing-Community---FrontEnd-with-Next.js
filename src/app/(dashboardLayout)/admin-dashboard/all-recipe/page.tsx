@@ -1,8 +1,10 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/jsx-sort-props */
+/* eslint-disable import/order */
 /* eslint-disable padding-line-between-statements */
 /* eslint-disable prettier/prettier */
 'use client'
 import { useDeleteRecipe } from '@/src/hooks/recipe.hook';
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { FaRegStar } from "react-icons/fa";
 import { toast } from 'sonner';

@@ -1,4 +1,10 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
+/* eslint-disable padding-line-between-statements */
+/* eslint-disable import/order */
+/* eslint-disable no-console */
+/* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-sort-props */
 import React, { useState } from 'react';
 import Image from "next/image";

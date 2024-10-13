@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable import/order */
+/* eslint-disable prettier/prettier */
 /* eslint-disable padding-line-between-statements */
 import { useMutation } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";

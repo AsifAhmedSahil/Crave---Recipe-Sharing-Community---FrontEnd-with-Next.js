@@ -1,14 +1,21 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable import/order */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-console */
+/* eslint-disable padding-line-between-statements */
+/* eslint-disable react/jsx-sort-props */
+/* eslint-disable prettier/prettier */
 "use client"; // Use client-side rendering
+
 import { useUser } from "@/src/context/user.provider";
 import { useAddRecipe } from "@/src/hooks/recipe.hook";
 import { useState } from "react";
 import { toast } from "sonner"; // Import toast for notifications
-import ReactQuill from "react-quill"; // Import React Quill
+import dynamic from 'next/dynamic'; // Import dynamic
 import "react-quill/dist/quill.snow.css"; // Import styles
 import DOMPurify from 'dompurify'; // Import DOMPurify
-import parse from 'html-react-parser';
 
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false }); // Lazy load ReactQuill
 
 interface Ingredient {
   name: string;
@@ -20,9 +27,7 @@ const RecipePostForm: React.FC = () => {
   const { mutate: handleRecipePost } = useAddRecipe();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [ingredients, setIngredients] = useState<Ingredient[]>([
-    { name: "", quantity: "" },
-  ]);
+  const [ingredients, setIngredients] = useState<Ingredient[]>([{ name: "", quantity: "" }]);
   const [instructions, setInstructions] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
   const [isDeleted] = useState<boolean>(false);
@@ -95,9 +100,7 @@ const RecipePostForm: React.FC = () => {
 
       // Sanitize the description and instructions
       const sanitizedDescription = DOMPurify.sanitize(description);
-      
       const sanitizedInstructions = DOMPurify.sanitize(instructions);
-     
 
       const recipeData = {
         title,
@@ -138,7 +141,7 @@ const RecipePostForm: React.FC = () => {
         value={description}
         onChange={setDescription}
         placeholder="Description"
-        className="bg-white text-black "
+        className="bg-white text-black"
       />
 
       {ingredients.map((ingredient, index) => (
@@ -195,8 +198,8 @@ const RecipePostForm: React.FC = () => {
       />
       {fileError && <p className="text-red-500 text-sm">{fileError}</p>}
 
-       {/* Tags Selection */}
-       <div className="mb-4">
+      {/* Tags Selection */}
+      <div className="mb-4">
         <h3 className="text-lg font-semibold text-white">Select Tags:</h3>
         <div className="flex flex-wrap gap-2">
           {availableTags.map((tag) => (
@@ -229,24 +232,5 @@ const RecipePostForm: React.FC = () => {
   );
 };
 
-// Component to display the recipe
-const RecipeDetails: React.FC<{ title: string, description: string, ingredients: Ingredient[], instructions: string, image: string }> = ({ title, description, ingredients, instructions, image }) => {
-  return (
-    <div className="recipe-details">
-      <h1 className="text-2xl font-bold">{title}</h1>
-      <img src={image} alt={title} className="w-full h-auto rounded-lg" />
-      <div className="description text-white" dangerouslySetInnerHTML={{ __html: description }} />
-      <h2 className="text-xl font-bold">Ingredients</h2>
-      <ul>
-        {ingredients.map((ingredient, index) => (
-          <li key={index}>
-            {ingredient.quantity} {ingredient.name}
-          </li>
-        ))}
-      </ul>
-      <div className="instructions" dangerouslySetInnerHTML={{ __html: instructions }} />
-    </div>
-  );
-};
-
+// Export your component
 export default RecipePostForm;

@@ -1,7 +1,9 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable import/order */
 /* eslint-disable react/jsx-sort-props */
 /* eslint-disable padding-line-between-statements */
-"use client";
 /* eslint-disable prettier/prettier */
+"use client";
 import { Avatar } from "@nextui-org/avatar";
 import {
   Dropdown,

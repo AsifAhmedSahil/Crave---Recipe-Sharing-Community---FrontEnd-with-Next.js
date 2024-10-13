@@ -1,6 +1,10 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable no-console */
+/* eslint-disable padding-line-between-statements */
+/* eslint-disable import/order */
+/* eslint-disable prettier/prettier */
 'use client'
-import Card from '@/src/components/card'
+
 import FbCard from '@/src/components/fbCard'
 import React, { useState, useEffect } from 'react'
 
