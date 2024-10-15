@@ -18,12 +18,12 @@ interface UserActionsProps {
 const UserActions = ({ userId, onBlockUser, onDeleteUser }:UserActionsProps) => {
   const handleBlockUser = () => {
     onBlockUser(userId);
-    // toast.success(`User ${userId} blocked.`);
+    
   };
 
   const handleDeleteUser = () => {
     onDeleteUser(userId);
-    // toast.success(`User ${userId} deleted.`);
+   
   };
 
   return (

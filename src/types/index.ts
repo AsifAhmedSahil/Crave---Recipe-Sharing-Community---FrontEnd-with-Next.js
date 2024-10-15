@@ -17,7 +17,7 @@ export interface IUser {
   status: any;
   followerIds: any;
   followingIds: any;
-  type: any; // Ensure 'type' is included in the IUser interface
+  type: any; 
 }
 
 

@@ -9,23 +9,23 @@ const recipesData = [
     {
       title: "Vegan Tikka Masala",
       description: "A flavorful vegan version of the classic Tikka Masala made with tofu and a rich tomato-based sauce.",
-      image: "https://res.cloudinary.com/djbpo9xg5/image/upload/v1725030840/nd8yozibne5pn7xoqki0.jpg",
+      image: "https://res.cloudinary.com/djbpo9xg5/image/upload/v1728991162/kchllk14hsvyy6cnpeqk.jpg",
       averageRating: 4.5,
-      cookingTime: 30, // Cooking time in minutes
+      cookingTime: 30, 
     },
     {
       title: "Spaghetti Aglio e Olio",
       description: "A quick and simple pasta dish made with garlic, olive oil, and chili flakes for breakfast topped with maple",
-      image: "https://res.cloudinary.com/djbpo9xg5/image/upload/v1725030840/nd8yozibne5pn7xoqki0.jpg",
+      image: "https://res.cloudinary.com/djbpo9xg5/image/upload/v1728991208/bjntssuwcrwqsoi3nmga.jpg",
       averageRating: 4.0,
-      cookingTime: 15, // Cooking time in minutes
+      cookingTime: 15, 
     },
     {
       title: "Classic Pancakes",
       description: "Fluffy pancakes perfect for breakfast topped with maple syrup for breakfast topped with maple",
-      image: "https://res.cloudinary.com/djbpo9xg5/image/upload/v1725030840/nd8yozibne5pn7xoqki0.jpg",
+      image: "https://res.cloudinary.com/djbpo9xg5/image/upload/v1728991245/zxjdsu0yuibaqyxtaedy.jpg",
       averageRating: 4.8,
-      cookingTime: 20, // Cooking time in minutes
+      cookingTime: 20, 
     },
   ]
   

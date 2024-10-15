@@ -13,7 +13,7 @@ const Banner = () => {
     <div className="relative z-10 container mx-auto px-4 text-center">
       <h1 className="text-4xl md:text-6xl font-bold mb-4">Welcome to the Recipe Sharing Community!</h1>
       <p className="text-lg md:text-xl mb-6">Share your favorite recipes, discover new ones, and engage with fellow cooking enthusiasts.</p>
-      <a href="/signup" className="bg-white text-blue-600 hover:bg-gray-100 font-semibold py-2 px-6 rounded-md transition duration-300">Join Now</a>
+      <a href="/register" className="bg-white text-blue-600 hover:bg-gray-100 font-semibold py-2 px-6 rounded-md transition duration-300">Join Now</a>
     </div>
   </div>
   )

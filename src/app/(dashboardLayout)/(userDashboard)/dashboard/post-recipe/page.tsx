@@ -10,12 +10,12 @@
 import { useUser } from "@/src/context/user.provider";
 import { useAddRecipe } from "@/src/hooks/recipe.hook";
 import { useState } from "react";
-import { toast } from "sonner"; // Import toast for notifications
-import dynamic from 'next/dynamic'; // Import dynamic
-import "react-quill/dist/quill.snow.css"; // Import styles
-import DOMPurify from 'dompurify'; // Import DOMPurify
+import { toast } from "sonner";
+import dynamic from "next/dynamic";
+import "react-quill/dist/quill.snow.css";
+import DOMPurify from "dompurify";
 
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false }); // Lazy load ReactQuill
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 interface Ingredient {
   name: string;
@@ -27,7 +27,9 @@ const RecipePostForm: React.FC = () => {
   const { mutate: handleRecipePost } = useAddRecipe();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [ingredients, setIngredients] = useState<Ingredient[]>([{ name: "", quantity: "" }]);
+  const [ingredients, setIngredients] = useState<Ingredient[]>([
+    { name: "", quantity: "" },
+  ]);
   const [instructions, setInstructions] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
   const [isDeleted] = useState<boolean>(false);
@@ -36,9 +38,18 @@ const RecipePostForm: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [cookingTime, setCookingTime] = useState<number | null>(null);
 
-  const availableTags = ["Spicy", "Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free"];
+  const availableTags = [
+    "Spicy",
+    "Vegetarian",
+    "Vegan",
+    "Gluten-Free",
+    "Dairy-Free",
+  ];
 
-  const handleIngredientChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleIngredientChange = (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const newIngredients = [...ingredients];
     newIngredients[index][e.target.name as keyof Ingredient] = e.target.value;
     setIngredients(newIngredients);
@@ -82,14 +93,17 @@ const RecipePostForm: React.FC = () => {
 
     const formData = new FormData();
     formData.append("file", image);
-    formData.append("upload_preset", "myCloud"); // Adjust as needed
-    formData.append("cloud_name", "djbpo9xg5"); // Adjust as needed
+    formData.append("upload_preset", "myCloud");
+    formData.append("cloud_name", "djbpo9xg5");
 
     try {
-      const response = await fetch("https://api.cloudinary.com/v1_1/djbpo9xg5/image/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/djbpo9xg5/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -98,7 +112,6 @@ const RecipePostForm: React.FC = () => {
       const dataFromCloud = await response.json();
       const uploadedImageUrl = dataFromCloud.secure_url;
 
-      // Sanitize the description and instructions
       const sanitizedDescription = DOMPurify.sanitize(description);
       const sanitizedInstructions = DOMPurify.sanitize(instructions);
 
@@ -107,25 +120,37 @@ const RecipePostForm: React.FC = () => {
         description: sanitizedDescription,
         ingredients,
         instructions: sanitizedInstructions,
-        image: uploadedImageUrl, // Use uploaded image URL
+        image: uploadedImageUrl,
         creator: user?._id,
         isDeleted,
         type,
-        tags: selectedTags, // Add selected tags
+        tags: selectedTags,
         cookingTime,
       };
 
-      // Log the recipe data or send it to your backend
       console.log(recipeData);
       handleRecipePost(recipeData);
       toast.success("Recipe posted successfully!", { id: loadingToastId });
+      setTitle("");
+    setDescription("");
+    setIngredients([{ name: "", quantity: "" }]);
+    setInstructions("");
+    setImage(null);
+    setSelectedTags([]);
+    setCookingTime(null);
+    setFileError(null);
     } catch (error) {
-      toast.error("Something went wrong. Please try again later.", { id: loadingToastId });
+      toast.error("Something went wrong. Please try again later.", {
+        id: loadingToastId,
+      });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-6 space-y-4 bg-black rounded-lg shadow-lg">
+    <form
+      onSubmit={handleSubmit}
+      className="p-6 space-y-4 bg-black rounded-lg shadow-lg"
+    >
       <h1 className="text-2xl font-bold text-white">Post a Recipe</h1>
 
       <input
@@ -145,7 +170,10 @@ const RecipePostForm: React.FC = () => {
       />
 
       {ingredients.map((ingredient, index) => (
-        <div key={index} className="flex flex-col gap-3 lg:flex-row lg:space-x-2">
+        <div
+          key={index}
+          className="flex flex-col gap-3 lg:flex-row lg:space-x-2"
+        >
           <input
             type="text"
             name="name"
@@ -193,12 +221,11 @@ const RecipePostForm: React.FC = () => {
       <input
         type="file"
         onChange={handleFileChange}
-        className={`w-full p-3 border ${fileError ? 'border-red-500' : 'border-gray-600'} rounded bg-gray-800 text-white placeholder-gray-400`}
+        className={`w-full p-3 border ${fileError ? "border-red-500" : "border-gray-600"} rounded bg-gray-800 text-white placeholder-gray-400`}
         required
       />
       {fileError && <p className="text-red-500 text-sm">{fileError}</p>}
 
-      {/* Tags Selection */}
       <div className="mb-4">
         <h3 className="text-lg font-semibold text-white">Select Tags:</h3>
         <div className="flex flex-wrap gap-2">
@@ -216,21 +243,24 @@ const RecipePostForm: React.FC = () => {
         </div>
       </div>
 
-      {/* Cooking Time Input */}
       <input
         type="number"
         placeholder="Cooking Time (in minutes)"
         value={cookingTime || ""}
-        onChange={(e) => setCookingTime(e.target.value ? parseInt(e.target.value) : null)}
+        onChange={(e) =>
+          setCookingTime(e.target.value ? parseInt(e.target.value) : null)
+        }
         className="w-full p-3 border border-gray-600 rounded bg-gray-800 text-white placeholder-gray-400"
       />
 
-      <button type="submit" className="w-full p-3 text-white bg-blue-600 rounded hover:bg-blue-500">
+      <button
+        type="submit"
+        className="w-full p-3 text-white bg-blue-600 rounded hover:bg-blue-500"
+      >
         Post Recipe
       </button>
     </form>
   );
 };
 
-// Export your component
 export default RecipePostForm;

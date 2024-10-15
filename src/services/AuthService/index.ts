@@ -28,8 +28,6 @@ export const registerAdmin = async (userData: FieldValues) => {
   try {
     const { data } = await axiosInstance.post("/auth/adminRegister", userData);
 
-    
-
     return data;
   } catch (error: any) {
     throw new Error(error);
@@ -65,17 +63,6 @@ export const forgotPassword = async (userData: FieldValues) => {
     throw new Error(error);
   }
 };
-// export const resetPassword = async (userData: FieldValues) => {
-//   try {
-//     const { data } = await axiosInstance.post("/auth/reset-password", userData);
-
-//     console.log(data)
-
-//     return data;
-//   } catch (error: any) {
-//     throw new Error(error);
-//   }
-// };
 
 export const resetPassword = async (userData: FieldValues, token: string) => {
   try {
@@ -84,7 +71,7 @@ export const resetPassword = async (userData: FieldValues, token: string) => {
       userData,
       {
         headers: {
-          Authorization: token, // Set the token here
+          Authorization: token,
         },
       }
     );
@@ -101,7 +88,6 @@ export const logout = () => {
   cookies().delete("refreshToken");
 };
 
-// update user profile
 export const updateUser = async (userData: FieldValues, id: string) => {
   try {
     const { data } = await axiosInstance.patch(`users/${id}`, userData);
@@ -111,7 +97,7 @@ export const updateUser = async (userData: FieldValues, id: string) => {
     throw new Error(error);
   }
 };
-export const deleteUser = async ( id: string) => {
+export const deleteUser = async (id: string) => {
   try {
     const { data } = await axiosInstance.delete(`users/${id}`);
 
@@ -120,7 +106,7 @@ export const deleteUser = async ( id: string) => {
     throw new Error(error);
   }
 };
-export const blockUser = async ( id: string) => {
+export const blockUser = async (id: string) => {
   try {
     const { data } = await axiosInstance.patch(`/users/${id}/block`);
 
@@ -129,7 +115,6 @@ export const blockUser = async ( id: string) => {
     throw new Error(error);
   }
 };
-
 
 export const getCurrentUser = async () => {
   const accessToken = cookies().get("accessToken")?.value;
@@ -149,8 +134,8 @@ export const getCurrentUser = async () => {
       status: decodedToken.status,
       bio: decodedToken.bio,
       type: decodedToken.type,
-      followerIds: decodedToken.followerIds, // Added followerIds
-      followingIds: decodedToken.followingIds, // Added followingIds
+      followerIds: decodedToken.followerIds,
+      followingIds: decodedToken.followingIds,
     };
   }
 

@@ -106,8 +106,8 @@ const PaymentForm: React.FC = () => {
           type="number"
           name="amount"
           id="amount"
-          value={399} // Fixed amount
-          readOnly // Make the field read-only
+          value={399} 
+          readOnly 
           className="w-full p-2 border  rounded"
         />
       </div>

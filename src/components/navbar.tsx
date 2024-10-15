@@ -48,7 +48,7 @@ export const Navbar = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
 
   const fetchUser = async () => {
-    const res = await fetch(`http://localhost:5000/api/v1/users/${user?._id}`, {
+    const res = await fetch(`https://crave-server-assignment-6.vercel.app/api/v1/users/${user?._id}`, {
         cache: "no-store"
     });
     const { data } = await res.json();
@@ -142,7 +142,7 @@ console.log(userData)
           </NavbarItem>
         ) : (
           <NavbarItem className="hidden sm:flex gap-2">
-            {/* <Link href={"/admin-dashboard/all-user"}> */}
+            
               <Button className="bg-yellow-600" disabled>Premium <GiQueenCrown className="size-5"/></Button>
             {/* </Link> */}
           </NavbarItem>
@@ -152,9 +152,14 @@ console.log(userData)
             </NavbarItem>
           </>
         ) : (
-          <Link href="/login">
+          <div className=" space-x-3">
+            <Link href="/login">
             <Button>Login</Button>
           </Link>
+          <Link href="/register">
+            <Button>Register</Button>
+          </Link>
+          </div>
         )}
       </NavbarContent>
 

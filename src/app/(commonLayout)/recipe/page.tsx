@@ -9,7 +9,7 @@ import Card from "@/src/components/card";
 import Pagination from "@/src/components/Pagination";
 import parse from 'html-react-parser';
 import DOMPurify from "dompurify";
-import Loading from "@/src/components/Loading"; // Import your loading component
+import Loading from "@/src/components/Loading"; 
 
 const RecipePage = () => {
   const [data, setData] = useState<any[]>([]);
@@ -19,17 +19,17 @@ const RecipePage = () => {
   const [cookingTime, setCookingTime] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 6;
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true); // Set loading to true when fetching starts
-      const res = await fetch("http://localhost:5000/api/v1/items/recipes", {
+      setLoading(true); 
+      const res = await fetch("https://crave-server-assignment-6.vercel.app/api/v1/items/recipes", {
         cache: "no-store",
       });
       const result = await res.json();
 
-      // Sanitize and parse the data
+     
       const sanitizedData = result.data.map((item: any) => ({
         ...item,
         description: DOMPurify.sanitize(item.description),
@@ -37,7 +37,7 @@ const RecipePage = () => {
       }));
 
       setData(sanitizedData);
-      setLoading(false); // Set loading to false when fetching is complete
+      setLoading(false); 
     };
 
     fetchData();
@@ -51,12 +51,12 @@ const RecipePage = () => {
     }
   }, [query]);
 
-  // Calculate pagination
+  
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = data?.slice(indexOfFirstProduct, indexOfLastProduct);
 
-  // Filter products based on search query, tags, ingredients, and cooking time
+  
   const filteredProducts = currentProducts?.filter((item: any) => {
     const matchesQuery = item.title.toLowerCase().includes(query.toLowerCase()) ||
                          item.description.toLowerCase().includes(query.toLowerCase());
@@ -74,17 +74,17 @@ const RecipePage = () => {
     return matchesQuery && matchesTags && matchesIngredients && matchesCookingTime && !item.isDeleted;
   });
 
-  // Handle pagination
+  
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  // Handle tag selection
+  
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
   };
 
-  if (loading) return <Loading />; // Show loading spinner while data is being fetched
+  if (loading) return <Loading />; 
 
   return (
     <div className="p-6 rounded-lg shadow-md">

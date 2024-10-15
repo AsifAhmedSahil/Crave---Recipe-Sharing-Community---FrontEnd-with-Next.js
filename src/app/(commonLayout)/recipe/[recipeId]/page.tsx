@@ -10,6 +10,7 @@ import { useUser } from "@/src/context/user.provider";
 import {
   useAddComment,
   useAddRating,
+  useDeleteComment,
   useDownvoteRecipe,
   useFollowUser,
   useUnFollowUser,
@@ -31,7 +32,7 @@ interface Ingredient {
 
 interface Comment {
   _id: string;
-  user: string;
+  userId: string;
   content: string;
   name: string;
   profilePhoto: string;
@@ -44,10 +45,10 @@ interface downvote {
   _id: string;
 }
 interface Rating {
-  _id: string; // Unique identifier for the rating
-  userId: string; // ID of the user who rated the recipe
-  recipeId: string; // ID of the recipe that was rated
-  stars: number; // Rating value (e.g., 1 to 5)
+  _id: string;
+  userId: string;
+  recipeId: string;
+  stars: number;
 }
 
 interface RecipeData {
@@ -61,9 +62,9 @@ interface RecipeData {
   averageRating: number;
   comments: Comment[];
   ratings: Rating[];
-  upvotes: upvote[]; // New field for upvotes
+  upvotes: upvote[];
   downvotes: downvote[];
-  tags: string[]; // Array of tags (e.g., ["Vegetarian", "Gluten-Free"])
+  tags: string[];
   cookingTime: number;
 }
 interface UserData {
@@ -71,6 +72,11 @@ interface UserData {
   followerIds: string[];
   followingIds: string[];
   role: string;
+}
+interface IUserContextProps {
+  _id: string;
+  name: string;
+  email: string;
 }
 
 const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
@@ -82,6 +88,7 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
   const { mutate: handleUpvoteRecipe } = useUpvoteRecipe();
   const { mutate: handleDownvoteRecipe } = useDownvoteRecipe();
   const { mutate: handleAddRating, data: ratingData } = useAddRating();
+  const { mutate: handleDeleteComment, data: commentData } = useDeleteComment();
   const { mutate: handleFollowUser } = useFollowUser();
   const { mutate: handleUnFollowUser } = useUnFollowUser();
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -91,7 +98,7 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
 
   const fetchRecipe = async () => {
     const res = await fetch(
-      `http://localhost:5000/api/v1/items/recipe/${params.recipeId}`,
+      `https://crave-server-assignment-6.vercel.app/api/v1/items/recipe/${params.recipeId}`,
       { cache: "no-store" }
     );
     const { data } = await res.json();
@@ -112,19 +119,19 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
 
   useEffect(() => {
     fetchRecipe();
-  }, [params.recipeId,rating]);
+  }, [params.recipeId, rating]);
 
   useEffect(() => {
     if (recipeData?.averageRating) {
-      fetchRecipe(); // Refetch when average rating changes
+      fetchRecipe();
     }
-  }, [recipeData?.averageRating,rating]);
+  }, [recipeData?.averageRating, rating]);
 
   console.log(user, recipeData);
 
   const fetchUser = async () => {
     const res = await fetch(
-      `http://localhost:5000/api/v1/users/${recipeData?.creator}`,
+      `https://crave-server-assignment-6.vercel.app/api/v1/users/${recipeData?.creator}`,
       {
         cache: "no-store",
       }
@@ -132,9 +139,9 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
     const { data } = await res.json();
     setUserData(data);
     if (data.followerIds.includes(user?.user?._id)) {
-      setIsFollowing(true); // Set follow state if following
+      setIsFollowing(true);
     } else {
-      setIsFollowing(false); // Set follow state if not following
+      setIsFollowing(false);
     }
   };
 
@@ -145,33 +152,29 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
         recipeId: recipeData._id,
         userId: user?.user?._id,
         content: newComment,
-        name: user?.user?.name || "Anonymous", // Provide a default name if undefined
-        profilePhoto: user?.user?.profilePhoto || "", // Provide a default value if undefined
+        name: user?.user?.name || "Anonymous",
+        profilePhoto: user?.user?.profilePhoto || "",
       };
 
-      // Optimistically update the comments
       const newCommentData: Comment = {
-        _id: Date.now().toString(), // Temporary ID, replace with the actual ID after server response
+        _id: Date.now().toString(),
         ...userData,
         createdAt: new Date(),
-        user: "",
+        // user: "",
       };
 
       setRecipeData((prevData) => {
-        if (!prevData) return prevData; // Ensure prevData is not null
+        if (!prevData) return prevData;
 
         return {
           ...prevData,
-          comments: [newCommentData, ...prevData.comments], // Add new comment to the beginning
+          comments: [newCommentData, ...prevData.comments],
         };
       });
 
-      setNewComment(""); // Clear the input field
+      setNewComment("");
 
-      // Send the comment to the server
       await handleAddComment(userData);
-      // Optionally, you can refetch the recipe data after adding the comment
-      // fetchRecipe();
     }
   };
 
@@ -180,15 +183,15 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
       recipeId: recipeData?._id,
       userId: user?.user?._id,
     };
-    
+
     if (hasUpvoted) {
-      handleDownvoteRecipe(userData); // You should implement a way to remove the upvote from the backend
+      handleDownvoteRecipe(userData);
       setHasUpvoted(false);
     } else {
-       handleUpvoteRecipe(userData);
+      handleUpvoteRecipe(userData);
       setHasUpvoted(true);
       if (hasDownvoted) {
-        setHasDownvoted(false); // Remove downvote if switching to upvote
+        setHasDownvoted(false);
       }
     }
 
@@ -200,19 +203,19 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
       recipeId: recipeData?._id,
       userId: user?.user?._id,
     };
-    
+
     if (hasDownvoted) {
-       handleDownvoteRecipe(userData); // You should implement a way to remove the downvote from the backend
+      handleDownvoteRecipe(userData);
       setHasDownvoted(false);
     } else {
-       handleDownvoteRecipe(userData);
+      handleDownvoteRecipe(userData);
       setHasDownvoted(true);
       if (hasUpvoted) {
-        setHasUpvoted(false); // Remove upvote if switching to downvote
+        setHasUpvoted(false);
       }
     }
 
-    fetchRecipe(); 
+    fetchRecipe();
   };
   const handleFollow = () => {
     const userData = {
@@ -236,19 +239,44 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
   const handleRatingSubmit = (e: any) => {
     e.preventDefault();
     const ratingData = {
-      _id:recipeData?.creator,
+      _id: recipeData?.creator,
       recipeId: recipeData?._id,
       userId: user?.user?._id,
       stars: rating,
     };
     console.log("Rating submitted:", ratingData);
-    // Here, you can also send the rating to the backend if needed
-    setRating(ratingData.stars); // Clear the input field after submission
+
+    setRating(ratingData.stars);
     handleAddRating(ratingData);
   };
 
-  // console.log(recipeData?.creator, "************");
-  if (!recipeData) return <Loading/>;
+  const deleteComment = async (id: string) => {
+    const userData = {
+      userId: user?.user?._id,
+      commentId: id,
+      recipeId: recipeData?._id,
+    };
+  
+    try {
+      
+      await handleDeleteComment(userData);
+  
+      
+      setRecipeData((prevData) => {
+        if (!prevData) return prevData;
+  
+        return {
+          ...prevData,
+          comments: prevData.comments.filter(comment => comment._id !== id),
+        };
+      });
+    } catch (error) {
+      console.error("Failed to delete comment:", error);
+    }
+  };
+  
+
+  if (!recipeData) return <Loading />;
 
   return (
     <div className="container mx-auto py-10">
@@ -299,8 +327,6 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
             ) : (
               <Button onClick={handleFollow}>Follow</Button>
             )}
-
-            {/* <Button onClick={handleunfollow}>Unfollow</Button> */}
           </div>
         </div>
         <div className="mb-6">
@@ -320,7 +346,6 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
                 type="number"
                 min="1"
                 max="5"
-                // value={rating}
                 onChange={(e) => setRating(Number(e.target.value))}
                 placeholder="Rate (1-5)"
                 className="border border-gray-300 rounded-lg p-2 w-48"
@@ -335,12 +360,12 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
             </form>
           </div>
           <div className="flex space-x-4">
-          <button onClick={handleUpvote} className="text-green-500">
-            Upvote ({recipeData.upvotes.length + (hasUpvoted ? 1 : 0)})
-          </button>
-          <button onClick={handleDownvote} className="text-red-500">
-            Downvote ({recipeData.downvotes.length + (hasDownvoted ? 1 : 0)})
-          </button>
+            <button onClick={handleUpvote} className="text-green-500">
+              Upvote ({recipeData.upvotes.length + (hasUpvoted ? 1 : 0)})
+            </button>
+            <button onClick={handleDownvote} className="text-red-500">
+              Downvote ({recipeData.downvotes.length + (hasDownvoted ? 1 : 0)})
+            </button>
           </div>
         </div>
         <div className="mt-8">
@@ -369,26 +394,31 @@ const RecipeDetails = ({ params }: { params: { recipeId: string } }) => {
                   new Date(a.createdAt).getTime()
               )
               .map((comment) => (
+                
                 <div
                   key={comment._id}
-                  className="border p-4 rounded-lg text-black flex space-x-3"
+                  className="border p-4 rounded-lg text-black flex space-x-3 justify-between"
                 >
-                  <Image
-                    width={50}
-                    height={50}
-                    src={comment.profilePhoto}
-                    alt={`${comment.name}'s profile`}
-                    className="w-10 h-10 rounded-full"
-                  />
-                  <div>
-                    <div className="flex items-center space-x-2">
-                      <span className="font-bold">{comment.name}</span>
-                      <span className="text-gray-500 text-sm">
-                        {new Date(comment.createdAt).toLocaleString()}
-                      </span>
+                  
+                  <div className="flex space-x-3">
+                    <Image
+                      width={50}
+                      height={50}
+                      src={comment.profilePhoto}
+                      alt={`${comment.name}'s profile`}
+                      className="w-10 h-10 rounded-full"
+                    />
+                    <div className="">
+                      <div className="flex items-center space-x-2 ">
+                        <span className="font-bold">{comment.name}</span>
+                        <span className="text-gray-500 text-sm">
+                          {new Date(comment.createdAt).toLocaleString()}
+                        </span>
+                      </div>
+                      <p className="mt-1">{comment.content}</p>
                     </div>
-                    <p className="mt-1">{comment.content}</p>
                   </div>
+                  {user?.user?._id === comment.userId && <button onClick={()=>deleteComment(comment._id)}>Delete</button>}
                 </div>
               ))}
           </div>

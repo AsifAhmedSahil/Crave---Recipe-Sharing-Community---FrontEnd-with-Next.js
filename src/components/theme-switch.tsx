@@ -46,66 +46,43 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
         className: clsx(
           "px-px transition-opacity hover:opacity-80 cursor-pointer",
           className,
-          classNames?.base,
+          classNames?.base
         ),
       })}
     >
       <VisuallyHidden>
         <input {...getInputProps()} />
       </VisuallyHidden>
-      {/* <div
+
+      <div
         {...getWrapperProps()}
-        className={slots.wrapper({
-          class: clsx(
-            [
-              "w-auto h-auto",
-              "bg-transparent",
-              "rounded-lg",
-              "flex items-center justify-center",
-              "group-data-[selected=true]:bg-transparent",
-              "!text-default-500",
-              "pt-px",
-              "px-0",
-              "mx-0",
-            ],
-            classNames?.wrapper,
-          ),
-        })}
-      > */}
-       <div
-          {...getWrapperProps()}
-          className={clsx(
-            slots.wrapper({
-              class: clsx(
-                [
-                  "w-auto h-auto",
-                  "bg-transparent",
-                  "rounded-lg",
-                  "flex items-center justify-center",
-                  "group-data-[selected=true]:bg-transparent",
-                  "!text-default-500",
-                  "pt-px",
-                  "px-0",
-                  "mx-0",
-                ],
-                classNames?.wrapper,
-              ),
-            }),
-            textColor // Apply the text color based on theme
-          )}
-        >
-        {/* {!isSelected || isSSR ? (
-          <SunFilledIcon size={22} />
-        ) : (
-          <MoonFilledIcon size={22} />
-        )} */}
+        className={clsx(
+          slots.wrapper({
+            class: clsx(
+              [
+                "w-auto h-auto",
+                "bg-transparent",
+                "rounded-lg",
+                "flex items-center justify-center",
+                "group-data-[selected=true]:bg-transparent",
+                "!text-default-500",
+                "pt-px",
+                "px-0",
+                "mx-0",
+              ],
+              classNames?.wrapper
+            ),
+          }),
+          textColor
+        )}
+      >
         <span className={textColor}>
-            {!isSelected || isSSR ? (
-              <SunFilledIcon size={22} />
-            ) : (
-              <MoonFilledIcon size={22} />
-            )}
-          </span>
+          {!isSelected || isSSR ? (
+            <SunFilledIcon size={22} />
+          ) : (
+            <MoonFilledIcon size={22} />
+          )}
+        </span>
       </div>
     </Component>
   );

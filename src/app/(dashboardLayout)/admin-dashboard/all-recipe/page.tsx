@@ -17,11 +17,11 @@ const RecipeTable = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
         try {
-            const res = await fetch("http://localhost:5000/api/v1/items/recipes", { cache: "no-store" });
+            const res = await fetch("https://crave-server-assignment-6.vercel.app/api/v1/items/recipes", { cache: "no-store" });
             const result = await res.json();
     
             if (result.data) {
-              // Check if data exists and filter for non-deleted recipes
+             
               setRecipes(result.data);
             } else {
               toast.error("No recipes found.");

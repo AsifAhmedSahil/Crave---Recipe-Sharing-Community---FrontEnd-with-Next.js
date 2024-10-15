@@ -19,7 +19,7 @@ const RecipeCard = ({ recipe }:{ recipe :any }) => {
         
         <div className="flex justify-between items-center">
           <div className="flex items-center justify-center mb-4">
-            {/* Example: Replace with actual rating logic if available */}
+            
             <span className="text-yellow-500 mr-2">
               {'★'.repeat(Math.floor(recipe.averageRating))} 
               {'☆'.repeat(5 - Math.floor(recipe.averageRating))}

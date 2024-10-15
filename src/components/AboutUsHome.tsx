@@ -8,7 +8,7 @@ const AboutUsHome = () => {
     <section className="flex flex-col md:flex-row items-center container mx-auto px-4 py-20" style={{ height: '600px', width: '100%' }}>
     <div className="md:w-1/2 h-full">
       <img 
-        src="https://res.cloudinary.com/djbpo9xg5/image/upload/v1725030840/nd8yozibne5pn7xoqki0.jpg" // Replace with the actual image path
+        src="https://res.cloudinary.com/djbpo9xg5/image/upload/v1725030840/nd8yozibne5pn7xoqki0.jpg" 
         alt="Cooking Community"
         className="w-full h-full object-cover rounded-lg shadow-lg"
       />

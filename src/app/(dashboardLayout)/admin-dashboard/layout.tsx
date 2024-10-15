@@ -33,11 +33,11 @@ export default function AdminDashboardLayout({
         <Container>
           <div className="w-full  lg:my-12 flex flex-col lg:flex-row gap-12">
             <div className="w-full lg:w-2/5 sticky top-0 z-10 mt-32">
-              {/* Sidebar */}
+             
               <Sidebar />
             </div>
             <div className="w-full lg:w-3/5 overflow-y-auto max-h-[calc(100vh-3rem)] ">
-              {/* Set max height based on your layout */}
+              
               {children}
             </div>
           </div>

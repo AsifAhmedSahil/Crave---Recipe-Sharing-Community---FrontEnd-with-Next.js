@@ -41,50 +41,48 @@ const ProfilePage: React.FC = () => {
       fetchUserData();
       fetchUserPosts();
     }
-  }, [user,page]);
+  }, [user, page]);
 
   const fetchUserData = async () => {
-    const res = await fetch(`http://localhost:5000/api/v1/users/${user?._id}`);
+    const res = await fetch(`https://crave-server-assignment-6.vercel.app/api/v1/users/${user?._id}`);
     const { data } = await res.json();
     setUserData(data);
   };
 
   const fetchUserPosts = async () => {
     const res = await fetch(
-      `http://localhost:5000/api/v1/items/recipe/my-recipe/${user?._id}`
+      `https://crave-server-assignment-6.vercel.app/api/v1/items/recipe/my-recipe/${user?._id}`
     );
     const data = await res.json();
     console.log(data);
     setPosts(data.data);
   };
 
-  const handleInfiniteScroll =async () =>{
-    console.log(window.innerHeight)
+  const handleInfiniteScroll = async () => {
+    console.log(window.innerHeight);
     try {
-        if (
-          window.innerHeight + document.documentElement.scrollTop + 1 >=
-          document.documentElement.scrollHeight
-        ) {
-          setLoading(true);
-          setPage((prev) => prev + 1);
-        }
-      } catch (error) {
-        console.log(error);
+      if (
+        window.innerHeight + document.documentElement.scrollTop + 1 >=
+        document.documentElement.scrollHeight
+      ) {
+        setLoading(true);
+        setPage((prev) => prev + 1);
       }
-     
-  }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  useEffect(() =>{
+  useEffect(() => {
     window.addEventListener("scroll", handleInfiniteScroll);
     return () => window.removeEventListener("scroll", handleInfiniteScroll);
-  },[])
+  }, []);
 
   if (!userData) return <div>Loading...</div>;
   console.log(posts);
-  // eslint-disable-next-line padding-line-between-statements
+
   return (
     <div className="flex max-w-7xl mx-auto p-4">
-      {/* User Information Section */}
       <div className="w-1/3 p-4  rounded shadow-md">
         <img
           src={userData.profilePhoto}
@@ -94,15 +92,13 @@ const ProfilePage: React.FC = () => {
         <h2 className="text-2xl font-bold text-center mb-6">{userData.name}</h2>
         <p className=" text-center mb-6">@{userData.username}</p>
         <p className="text-center">{userData.bio}</p>
-        
+
         <div className="mt-4 text-center  flex gap-2 justify-center">
           <p>{userData.followerIds.length} Followers</p> |
           <p>{userData.followingIds.length} Following</p>
         </div>
       </div>
 
-      {/* Posts Section */}
-      {/* <ProfileData  id={user?._id}/> */}
       <div
         className="w-2/3 p-4  rounded shadow-md overflow-y-scroll"
         style={{ maxHeight: "80vh" }}
@@ -111,7 +107,10 @@ const ProfilePage: React.FC = () => {
 
         {posts.length > 0 ? (
           posts.map((post) => (
-            <div key={post._id} className=" rounded p-4 mb-4 shadow my-12 border border-gray-400">
+            <div
+              key={post._id}
+              className=" rounded p-4 mb-4 shadow my-12 border border-gray-400"
+            >
               <h4 className="text-lg font-bold">{post.title}</h4>
               <p className="text-gray-600">{post.description}</p>
               <p className="mt-2">
@@ -122,7 +121,6 @@ const ProfilePage: React.FC = () => {
                 alt={post.title}
                 className="w-full h-48 object-cover rounded mt-2"
               />
-              
             </div>
           ))
         ) : (

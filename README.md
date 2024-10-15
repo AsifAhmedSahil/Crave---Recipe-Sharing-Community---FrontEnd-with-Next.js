@@ -1,8 +1,25 @@
-# Next.js & NextUI Template
+# Recipe Sharing Community
 
-This is a template for creating applications using Next.js 14 (app directory) and NextUI (v2).
+## Project Overview
+The Recipe Sharing Community is a full-stack web application designed to connect cooking enthusiasts by providing a platform for sharing, discovering, and organizing recipes. It enables users to post recipes, create interactive ingredient checklists, and estimate cooking times, fostering a supportive culinary community.
 
-[Try it on CodeSandbox](https://githubbox.com/nextui-org/next-app-template)
+## Features
+- **User Registration**: Create and manage user accounts.
+- **Recipe Submission**: Post recipes with detailed ingredients, instructions, and images.
+- **Social Features**: Commenting, rating, following users, and upvoting/downvoting recipes.
+- **Interactive Features**: Ingredient checklist and cooking timer.
+- **Premium Membership**: Subscription-based access to exclusive content.
+
+---
+
+## Frontend Setup
+
+### Prerequisites
+- Node.js (version 14 or higher)
+- npm or yarn
+
+
+
 
 ## Technologies Used
 

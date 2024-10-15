@@ -17,7 +17,7 @@ const AllUser =() => {
     const { mutate: handleBlockUser } = useBlockUser();
   useEffect(() => {
     const fetchUsers = async () => {
-      const res = await fetch("http://localhost:5000/api/v1/users/", { cache: "no-store" });
+      const res = await fetch("https://crave-server-assignment-6.vercel.app/api/v1/users/", { cache: "no-store" });
       const { data } = await res.json();
       setUsers(data);
     };
@@ -33,7 +33,7 @@ const AllUser =() => {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
+        confirmButtonText: 'Yes, Block it!',
       }).then(async (result) => {
         if (result.isConfirmed) {
           try {
@@ -47,7 +47,7 @@ const AllUser =() => {
       });
       };
     
-    //   handleDeleteUser({id: userId})
+   
       const DeleteUser = async (userId: string) => {
         Swal.fire({
             title: 'Are you sure?',

@@ -9,13 +9,13 @@
 'use client';
 
 import { Button } from '@nextui-org/button';
-import FormInput from '@/src/components/form/FormInput'; // Ensure this path is correct
-import Form from '@/src/components/form/Form'; // Ensure this path is correct
+import FormInput from '@/src/components/form/FormInput'; 
+import Form from '@/src/components/form/Form'; 
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import forgotPasswordValidationSchema from '@/src/schemas/forget.schema';
 import { useForgetPassword } from '@/src/hooks/auth.hook';
- // Add this validation schema
+ 
 
 const ForgotPasswordPage = () => {
   const { register, handleSubmit, formState: { errors } } = useForm({

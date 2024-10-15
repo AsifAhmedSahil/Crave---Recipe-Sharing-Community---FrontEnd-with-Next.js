@@ -93,7 +93,7 @@ const LoginPage = () => {
   );
 };
 
-// Wrap in a Suspense component
+
 const WrappedLoginPage = () => (
   <Suspense fallback={<Loading />}>
     <LoginPage />

@@ -47,12 +47,7 @@ const NavbarDropdown = () => {
         <DropdownItem onClick={() => handleNavigation("/profile")}>
           Profile
         </DropdownItem>
-        <DropdownItem onClick={() => handleNavigation("/profile/my-recipe")}>
-          My Recipe
-        </DropdownItem>
-        <DropdownItem onClick={() => handleNavigation("/profile/post-recipe")}>
-          Post Recipe
-        </DropdownItem>
+        
         <DropdownItem onClick={()=> handleLogout()}  className="text-danger" color="danger">
           Logout
         </DropdownItem>

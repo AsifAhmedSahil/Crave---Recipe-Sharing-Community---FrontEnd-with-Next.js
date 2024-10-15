@@ -49,6 +49,15 @@ export const deleteRecipe = async (id: string) => {
     throw new Error(error);
   }
 };
+export const deleteComment = async (userData:FieldValues) => {
+  try {
+    const { data } = await axiosInstance.delete(`items/${userData.recipeId}/comment/${userData.commentId}/${userData.userId}`);
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
 export const updateRecipe = async (id: string,userData: FieldValues) => {
   console.log(id,userData)
   try {
@@ -56,7 +65,11 @@ export const updateRecipe = async (id: string,userData: FieldValues) => {
 
     return data;
   } catch (error: any) {
-    throw new Error(error);
+    return {
+      success: false,
+      //* you can return error message from here
+      message: error,
+    }
   }
 };
 export const followUser = async (userData: FieldValues) => {

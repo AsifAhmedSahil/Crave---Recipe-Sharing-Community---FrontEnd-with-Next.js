@@ -54,8 +54,8 @@ const RegisterPage = () => {
 
     const formData = new FormData();
     formData.append("file", file as File);
-    formData.append("upload_preset", "myCloud"); // Adjust as needed
-    formData.append("cloud_name", "djbpo9xg5"); // Adjust as needed
+    formData.append("upload_preset", "myCloud");
+    formData.append("cloud_name", "djbpo9xg5");
 
     try {
       const response = await fetch(
@@ -79,7 +79,7 @@ const RegisterPage = () => {
         profilePhoto,
       };
       console.log(userData);
-      //    handleRegistration(userData)
+      
       handleRegistration(userData);
       setIsLoading(true)
       router.push("/")

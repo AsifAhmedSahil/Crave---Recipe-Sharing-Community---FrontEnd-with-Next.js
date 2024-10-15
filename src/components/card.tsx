@@ -24,14 +24,14 @@ interface UserData {
 }
 
 const Card = ({ item }: { item: any }) => {
-  // Adjusted prop destructuring
+  
   const sanitizedDescription = DOMPurify.sanitize(item.description);
   const description = parse(sanitizedDescription);
   const {user} = useUser()
   const [userData, setUserData] = useState<UserData | null>(null);
 
   const fetchUser = async () => {
-    const res = await fetch(`http://localhost:5000/api/v1/users/${user?._id}`, {
+    const res = await fetch(`https://crave-server-assignment-6.vercel.app/api/v1/users/${user?._id}`, {
         cache: "no-store"
     });
     const { data } = await res.json();
@@ -48,14 +48,14 @@ useEffect(() => {
     <div className="container mx-auto flex justify-center md:justify-start">
       <div className="max-w-sm w-full">
         {" "}
-        {/* Ensure full width for each card */}
+       
         <div className="bg-white relative shadow-lg hover:shadow-xl transition duration-500 rounded-lg">
           <Image
             src={item.image}
             width={400}
             height={200}
             alt="thumbnail_image"
-            className="w-full h-60 object-cover rounded-t-lg" // Fixed height and cover
+            className="w-full h-60 object-cover rounded-t-lg" 
           />
           <div className="py-4 px-5">
             <h2 className="text-2xl font-semibold text-black">
@@ -91,7 +91,7 @@ useEffect(() => {
                 </span>
               ))}
             </div>
-            {/* Additional content goes here */}
+          
           </div>
           <div className="absolute top-2 right-2 py-2 px-4 bg-black text-yellow-600 rounded-lg">
             <span className="font-medium">{item.type}</span>

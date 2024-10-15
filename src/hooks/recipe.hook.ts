@@ -6,8 +6,9 @@
 /* eslint-disable prettier/prettier */
 import { useMutation } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
-import { addComment, deleteRecipe, downvoteRecipe, followUser, paymentUser, postRecipe, ratingRecipe, unFollowUser, updateRecipe, upvoteRecipe } from "../services/recipeServices";
+import { addComment, deleteComment, deleteRecipe, downvoteRecipe, followUser, paymentUser, postRecipe, ratingRecipe, unFollowUser, updateRecipe, upvoteRecipe } from "../services/recipeServices";
 import { toast } from "sonner";
+import DOMPurify from "dompurify";
 
 export const useAddComment = () => {
   return useMutation<any, Error, FieldValues>({
@@ -50,6 +51,18 @@ export const useDeleteRecipe = () => {
   return useMutation<any, Error, string>({
     mutationKey: ["DELETE_RECIPE"],
     mutationFn: async (id) => await deleteRecipe(id),
+    onSuccess: () => {
+      toast.success("Recipe Deleted Successfully");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+export const useDeleteComment = () => {
+  return useMutation<any, Error, FieldValues>({
+    mutationKey: ["DELETE_COMMENT"],
+    mutationFn: async (userData) => await deleteComment(userData),
     onSuccess: () => {
       toast.success("Recipe Deleted Successfully");
     },
@@ -122,7 +135,13 @@ export const usePaymentUser = () => {
 export const useUpdateRecipe = () => {
   return useMutation<any, Error, FieldValues>({
     mutationKey: ["UPDATE_RECIPE"],
-    mutationFn: async ({id,userData}) => await updateRecipe(id,userData),
+    mutationFn: async ({id,userData}) => {
+      const sanitizedUserData = {
+        ...userData,
+        description: DOMPurify.sanitize(userData.description),
+        instructions: DOMPurify.sanitize(userData.instructions),
+      };
+      return await updateRecipe(id,sanitizedUserData)},
     onSuccess: () => {
       toast.success("update recipe...");
     },

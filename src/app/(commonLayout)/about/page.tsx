@@ -36,10 +36,10 @@ export default function AboutPage() {
         <section className="mb-12">
           <h2 className="text-2xl font-semibold mb-4">Meet the Team</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Team Member 1 */}
+            
             <div className="bg-white rounded-lg shadow-lg p-6 text-center">
               <Image
-                src="https://i.ibb.co/4K7MwQk/IMG-8417-2.jpg" // Replace with your image path
+                src="https://i.ibb.co/4K7MwQk/IMG-8417-2.jpg" 
                 alt="Team Member 1"
                 width={200}
                 height={200}
@@ -53,10 +53,10 @@ export default function AboutPage() {
               </p>
             </div>
 
-            {/* Team Member 2 */}
+            
             <div className="bg-white rounded-lg shadow-lg p-6 text-center">
               <Image
-                src="https://i.ibb.co/4K7MwQk/IMG-8417-2.jpg" // Replace with your image path
+                src="https://i.ibb.co/4K7MwQk/IMG-8417-2.jpg" 
                 alt="Team Member 2"
                 width={200}
                 height={200}
@@ -70,10 +70,10 @@ export default function AboutPage() {
               </p>
             </div>
 
-            {/* Team Member 3 */}
+         
             <div className="bg-white rounded-lg shadow-lg p-6 text-center">
               <Image
-                src="https://i.ibb.co/4K7MwQk/IMG-8417-2.jpg" // Replace with your image path
+                src="https://i.ibb.co/4K7MwQk/IMG-8417-2.jpg" 
                 alt="Team Member 3"
                 width={200}
                 height={200}

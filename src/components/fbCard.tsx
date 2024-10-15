@@ -11,10 +11,10 @@ import Image from "next/image";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import { toast } from "sonner";
-import UpdateModal from './UpdateModal'; // Adjust the import path as necessary
+import UpdateModal from './UpdateModal'; 
 import { useUpdateRecipe } from '../hooks/recipe.hook';
 
-const FbCard = ({ item, onDelete }: { item: any; onDelete: (id: string) => void }) => {
+const FbCard = ({ item, onDelete  }: { item: any; onDelete: (id: string) => void }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const { mutate: handleUpdateRecipe,isPending,isSuccess } = useUpdateRecipe();
 
@@ -47,9 +47,8 @@ const FbCard = ({ item, onDelete }: { item: any; onDelete: (id: string) => void 
     }
     console.log(userData)
     handleUpdateRecipe({ id: item._id, userData })
-    // Implement your update logic here, e.g., send it to the server
-    // Optionally refresh item data or manage state
-    setModalOpen(false); // Close the modal after updating
+    
+    setModalOpen(false); 
   };
 
   return (
@@ -78,11 +77,11 @@ const FbCard = ({ item, onDelete }: { item: any; onDelete: (id: string) => void 
               </button>
             </Link>
             <div className="flex gap-2">
-              {/* <Link href={`/dashboard/update-recipe/${item._id}`}> */}
+              
                 <button onClick={() => setModalOpen(true)} type="button" className="text-blue-500 border border-blue-500 hover:bg-blue-500 hover:text-white font-medium rounded-lg text-sm px-4 py-2 transition duration-300 ease-in-out">
                   Update
                 </button>
-              {/* </Link> */}
+              
               <button onClick={handleDeleteItem} type="button" className="text-red-500 border border-red-500 hover:bg-red-500 hover:text-white font-medium rounded-lg text-sm px-4 py-2 transition duration-300 ease-in-out">
                 Delete
               </button>
